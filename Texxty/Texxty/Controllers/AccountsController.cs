@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Texxty.Models;
 using Texxty.Repository.Classes;
+
 
 namespace Texxty.Controllers
 {
@@ -35,13 +35,12 @@ namespace Texxty.Controllers
                     return View();
                 }
 
-                user.ActiveStatus = false; // Will set it to true when email is verified
+                user.ActiveStatus = true;
                 userRepository.Insert(user);
 
-                // TODO: Send email to user
 
                 // Set success message
-                TempData["RegistrationMessage"] = "Account created. Please verify your email to activate your account.";
+                TempData["RegistrationMessage"] = "Account created. Please login to continue using the site.";
                 return RedirectToAction("Login");
 
             }
@@ -72,19 +71,9 @@ namespace Texxty.Controllers
                 // If credentials are correct
                 if (logged_user != null)
                 {
-                    // If account is active
-                    if(logged_user.ActiveStatus == true)
-                    {
-                        Session["username"] = logged_user.Username;
-                        Session["user_id"] = logged_user.UserID;
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        ViewBag.Message = "Your account is not active. Please verify your email.";
-                        return View();
-                    }
-                    
+                    Session["username"] = logged_user.Username;
+                    Session["user_id"] = logged_user.UserID;
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -99,6 +88,64 @@ namespace Texxty.Controllers
             }
         }
 
+        public ActionResult Logout()
+        {
+            Session["user_id"] = null;
+            Session["username"] = null;
+            return RedirectToAction("Login");
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            var user = userRepository.Get(id);
+            user.Password = string.Empty;
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(User user, string NewPassword, string NewPasswordRepeat)
+        {
+            if (user.Password != null && !string.IsNullOrEmpty(NewPassword) && !string.IsNullOrEmpty(NewPasswordRepeat))
+            {
+                if(!NewPassword.Equals(NewPasswordRepeat))
+                {
+                    ViewBag.Message = "Password doesn't match. Please try again";
+                    var user1 = userRepository.Get(user.UserID);
+                    user1.Password = string.Empty;
+                    return View(user1);
+                }
+                else
+                {
+                    user.Password = NewPassword;
+                }
+            }
+
+            var dbUser = context.Users.Where(u => u.UserID == user.UserID).FirstOrDefault();
+            if(dbUser.Email != user.Email)
+            {
+                if (!userRepository.CheckEmailAvailable(user))
+                {
+                    ViewBag.Message = "Email not available";
+                    dbUser.Email = string.Empty;
+                    dbUser.Password = string.Empty;
+                    return View(dbUser);
+                }
+            }
+
+            userRepository.Update(user);
+            TempData["Message"] = "Information Updated";
+            return RedirectToAction("Details", new { id = user.UserID });
+        }
+
+
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            var user = userRepository.Get(id);
+            user.Password = string.Empty;
+            return View(user);
+        }
 
 
         [NonAction]

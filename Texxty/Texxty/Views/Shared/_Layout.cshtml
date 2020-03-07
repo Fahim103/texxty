@@ -25,6 +25,20 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
             </div>
+
+            <div>
+                @if (Session["user_id"] != null)
+                {
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        @Html.ActionLink("Welcome " + @Session["username"].ToString().ToUpper(), "Details", "Accounts", new { id = int.Parse(Session["user_id"].ToString()) }, null)
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Logout", "Logout", "Accounts")
+                    </li>
+                </ul>
+                }
+            </div>
         </div>
     </div>
     <div class="container body-content">
