@@ -104,38 +104,34 @@ namespace Texxty.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(User user, string NewPassword, string NewPasswordRepeat)
+        public ActionResult Edit(User user)
         {
-            if (user.Password != null && !string.IsNullOrEmpty(NewPassword) && !string.IsNullOrEmpty(NewPasswordRepeat))
+            if (!ModelState.IsValid)
+                return View(user);
+            try
             {
-                if(!NewPassword.Equals(NewPasswordRepeat))
+                var dbUser = context.Users.Where(u => u.UserID == user.UserID).FirstOrDefault();
+                if (dbUser.Email != user.Email)
                 {
-                    ViewBag.Message = "Password doesn't match. Please try again";
-                    var user1 = userRepository.Get(user.UserID);
-                    user1.Password = string.Empty;
-                    return View(user1);
+                    if (!userRepository.CheckEmailAvailable(user))
+                    {
+                        ViewBag.Message = "Email not available";
+                        dbUser.Email = string.Empty;
+                        return View(dbUser);
+                    }
                 }
-                else
-                {
-                    user.Password = NewPassword;
-                }
-            }
+                user.Password = dbUser.Password;
+                user.ActiveStatus = dbUser.ActiveStatus;
+                userRepository.Update(user);
+                TempData["Message"] = "Information Updated";
+                return RedirectToAction("Details", new { id = user.UserID });
 
-            var dbUser = context.Users.Where(u => u.UserID == user.UserID).FirstOrDefault();
-            if(dbUser.Email != user.Email)
+            }
+            catch(Exception ex)
             {
-                if (!userRepository.CheckEmailAvailable(user))
-                {
-                    ViewBag.Message = "Email not available";
-                    dbUser.Email = string.Empty;
-                    dbUser.Password = string.Empty;
-                    return View(dbUser);
-                }
+                return View(user);
             }
-
-            userRepository.Update(user);
-            TempData["Message"] = "Information Updated";
-            return RedirectToAction("Details", new { id = user.UserID });
+            
         }
 
 
@@ -147,6 +143,56 @@ namespace Texxty.Controllers
             return View(user);
         }
 
+
+        [HttpGet]
+        public ActionResult ChangePassword(int id)
+        {
+            var user = userRepository.Get(id);
+            user.Password = string.Empty;
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(User user, string NewPassword, string NewPasswordRetype)
+        {
+            if (!ModelState.IsValid)
+                return View(user);
+
+            if (string.IsNullOrEmpty(NewPassword) || string.IsNullOrEmpty(NewPasswordRetype))
+            {
+                ViewBag.Message = "Please fill out all fields";
+                return View(user);
+            }
+            else if (!NewPassword.Equals(NewPasswordRetype))
+            {
+                ViewBag.Message = "New passwords fields doesn't match";
+                return View(user);
+            }
+            else
+            {
+                try
+                {
+                    var dbUser = context.Users.Where(u => u.UserID == user.UserID).FirstOrDefault();
+                    if (dbUser.Password != user.Password)
+                    {
+                        ViewBag.Message = "Current password value didn't match";
+                        dbUser.Password = string.Empty;
+                        return View(dbUser);
+                    }
+
+                    dbUser.Password = NewPassword;
+                    userRepository.Update(dbUser);
+                    TempData["Message"] = "Information Updated";
+                    return RedirectToAction("Details", new { id = user.UserID });
+
+                }
+                catch (Exception ex)
+                {
+                    return View(user);
+                }
+            }
+
+        }
 
         [NonAction]
         public bool ValidateRegister(User user, string Password2)

@@ -24,6 +24,7 @@ namespace Texxty.Models
         string Password { get; set; }
 
         [Required(ErrorMessage = "Fullname is required")]
+        [Display(Name = "Full Name")]
         string FullName { get; set; }
 
         bool ActiveStatus { get; set; }

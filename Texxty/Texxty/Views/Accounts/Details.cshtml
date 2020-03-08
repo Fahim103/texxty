@@ -42,6 +42,7 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.UserID }) |
+    @Html.ActionLink("Update Information", "Edit", new { id = Model.UserID }) |
+    @Html.ActionLink("Change Password", "ChangePassword", new { id = Model.UserID }) |
     @Html.ActionLink("Home", "Index", "Home")
 </p>
