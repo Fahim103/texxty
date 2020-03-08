@@ -19,6 +19,12 @@ namespace Texxty.Controllers
             context = new TexxtyDBEntities();
         }
 
+        [NonAction]
+        public bool AuthorizeUser()
+        {
+            return Session["user_id"] != null;
+        }
+
         [HttpGet]
         public ActionResult Register()
         {
@@ -98,6 +104,9 @@ namespace Texxty.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
+            if (!AuthorizeUser())
+                return RedirectToAction("Login");
+
             var user = userRepository.Get(id);
             user.Password = string.Empty;
             return View(user);
@@ -138,6 +147,9 @@ namespace Texxty.Controllers
         [HttpGet]
         public ActionResult Details(int id)
         {
+            if (!AuthorizeUser())
+                return RedirectToAction("Login");
+
             var user = userRepository.Get(id);
             user.Password = string.Empty;
             return View(user);
@@ -147,6 +159,9 @@ namespace Texxty.Controllers
         [HttpGet]
         public ActionResult ChangePassword(int id)
         {
+            if (!AuthorizeUser())
+                return RedirectToAction("Login");
+
             var user = userRepository.Get(id);
             user.Password = string.Empty;
             return View(user);
@@ -222,5 +237,7 @@ namespace Texxty.Controllers
                 return false;
             }
         }
+
+        
     }
 }
