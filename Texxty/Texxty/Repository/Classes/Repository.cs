@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using Texxty.Models;
 
-namespace Texxty.Repository
+namespace Texxty.Repository.Classes
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
