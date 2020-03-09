@@ -28,30 +28,31 @@ namespace Texxty.Repository.Classes
         public void Insert(TEntity entity)
         {
 
-            //   try
-            // {
-            context.Set<TEntity>().Add(entity);
-            context.SaveChanges();
-            //}
-            /*catch (DbEntityValidationException e)
+            try
+            {
+                context.Set<TEntity>().Add(entity);
+                context.SaveChanges();
+            }
+            catch ( Exception e)
             {
                 var msg = e.InnerException;
+            }
 
 
-            */
+            
         }
         public void Update(TEntity entity)
         {
-           // try
-            //{  
+           try
+           {  
                 
                 context.Entry(entity).State = EntityState.Modified;
                 context.SaveChanges();
-            //}
-            //catch (Exception e)
-            //{
-             //   var msg = e.InnerException;
-            //}
+           }
+           catch (Exception e)
+           {
+              var msg = e.InnerException;
+           }
 
         }
 

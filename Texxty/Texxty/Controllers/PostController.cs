@@ -14,18 +14,20 @@ namespace Texxty.Controllers
     {
         private readonly PostRepository postrepo;
         private readonly SlugHelper helper;
+        int blogid;
 
         public PostController()
         {
             postrepo = new PostRepository();
             helper = new SlugHelper();
+            blogid = Convert.ToInt32(Session["blogID"]);
         }
 
         
         // GET: Post
-        int blogid = 2;
+        
         public ActionResult Index()
-        {
+        { 
              return View(postrepo.GetAllPosts(blogid));
         }
         [HttpGet]
