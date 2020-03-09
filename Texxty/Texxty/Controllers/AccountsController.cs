@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Texxty.Models;
 using Texxty.Repository.Classes;
@@ -212,12 +213,35 @@ namespace Texxty.Controllers
         [NonAction]
         public bool ValidateRegister(User user, string Password2)
         {
+            Regex namePattern = new Regex("^[a-z A-Z]*$");
+            bool pattern = true;
+            if (!namePattern.IsMatch(user.FullName))
+            {
+                ModelState.AddModelError("FullName", "Name can only contain alphabets, must have upper case and lower case alphabet");
+                pattern = false;
+            }
+
+            Regex usernamePattern = new Regex(@"^(?=.*[a-z])|(?=.*[A-Z])");
+            if (!usernamePattern.IsMatch(user.Username))
+            {
+                ModelState.AddModelError("Username", "Username must contain upper and lower case Alphabet and Numbers");
+                pattern = false;
+            }
+
+            if (user.Password.Length < 8)
+            {
+                ModelState.AddModelError("Password", "Password length must be at least 8 character long");
+                pattern = false;
+            }
             if (user.Password != Password2)
             {
                 TempData["RegistrationMessage"] = "Password doesn't match. Please try again";
-                return false;
+                pattern = false;
             }
-            
+
+            if (!pattern)
+                return pattern;
+
             if (userRepository.CheckEmailAvailable(user))
             {
                 
