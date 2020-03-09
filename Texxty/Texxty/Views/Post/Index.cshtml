@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Texxty.Models.Post>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table" border="1">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublishedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedDate)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Draft)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostContent)
+            </th>
+            
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublishedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedDate)
+            </td>
+            <td>
+               @if (item.Draft == true) { <text> Draftt</text> } else { <text>  Published </text> }
+
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostContent)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.PostID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.PostID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.PostID })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>
