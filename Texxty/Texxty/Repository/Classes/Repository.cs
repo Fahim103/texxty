@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using Texxty.Models;
 
 namespace Texxty.Repository.Classes
@@ -20,7 +19,7 @@ namespace Texxty.Repository.Classes
         {
             return context.Set<TEntity>().ToList();
         }
-
+        
         public TEntity Get(int id)
         {
             return context.Set<TEntity>().Find(id);
@@ -28,21 +27,32 @@ namespace Texxty.Repository.Classes
 
         public void Insert(TEntity entity)
         {
-            context.Set<TEntity>().Add(entity);
-            context.SaveChanges();
-        }
 
-        public void Update(TEntity entity)
-        {
             try
             {
-                context.Entry(entity).State = EntityState.Modified;
+                context.Set<TEntity>().Add(entity);
                 context.SaveChanges();
             }
-            catch (Exception e)
+            catch ( Exception e)
             {
                 var msg = e.InnerException;
             }
+
+
+            
+        }
+        public void Update(TEntity entity)
+        {
+           try
+           {  
+                
+                context.Entry(entity).State = EntityState.Modified;
+                context.SaveChanges();
+           }
+           catch (Exception e)
+           {
+              var msg = e.InnerException;
+           }
 
         }
 

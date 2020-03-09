@@ -1,0 +1,78 @@
+﻿@model Texxty.Models.Post
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Post</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PublishedDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PublishedDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifiedDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ModifiedDate)
+            </dd>
+    
+            
+            <dt>
+                @Html.DisplayNameFor(model => model.Draft)
+            </dt>
+    
+            <dd>
+                @if (Model.Draft == true)
+                {<text> Draftt</text> }
+            else
+            { <text>  Published </text>}
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PostContent)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PostContent)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Blog.Title)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Blog.Title)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.PostID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

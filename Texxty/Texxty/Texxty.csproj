@@ -55,6 +55,9 @@
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Slugify.Core, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Slugify.Core.2.3.0\lib\net40\Slugify.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -133,6 +136,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -145,7 +149,9 @@
     <Compile Include="Models\BlogTopic.cs">
       <DependentUpon>TexxtyDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\Post.cs" />
     <Compile Include="Models\Classes\User.cs" />
+    <Compile Include="Models\IPostMetaData.cs" />
     <Compile Include="Models\IUserMetaData.cs" />
     <Compile Include="Models\Post.cs">
       <DependentUpon>TexxtyDBModel.tt</DependentUpon>
@@ -172,6 +178,7 @@
       <DependentUpon>TexxtyDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Classes\PostRepository.cs" />
     <Compile Include="Repository\Classes\UserRepository.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\Classes\Repository.cs" />
@@ -337,6 +344,11 @@
     <Content Include="Views\Accounts\Edit.cshtml" />
     <Content Include="Views\Accounts\Details.cshtml" />
     <Content Include="Views\Accounts\ChangePassword.cshtml" />
+    <Content Include="Views\Post\Index.cshtml" />
+    <Content Include="Views\Post\Create.cshtml" />
+    <Content Include="Views\Post\Delete.cshtml" />
+    <Content Include="Views\Post\Edit.cshtml" />
+    <Content Include="Views\Post\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
