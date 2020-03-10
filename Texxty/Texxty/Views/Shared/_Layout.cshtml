@@ -2,50 +2,42 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title - Diary</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+            @Html.ActionLink("Diary", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    @{
+                        if (Session["username"] != null)
+                        {
+                            @:<li class="nav-item"><a class="nav-link" href="#">@Session["username"]</a></li>
+                            @:<li class="nav-item">@Html.ActionLink("Uploads", "Index", new { controller = "Upload" }, new { @class = "nav-link" })</li>
+                            @:<li class="nav-item">@Html.ActionLink("Logout", "Logout", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
+                        }
+                        else
+                        {
+                            @:<li class="nav-item">@Html.ActionLink("Login", "Login", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
+                            @:<li class="nav-item">@Html.ActionLink("Register", "Register", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
+                        }
+                    }
                 </ul>
-            </div>
-
-            <div>
-                @if (Session["user_id"] != null)
-                {
-                <ul class="nav navbar-nav">
-                    <li class="nav-item">
-                        @Html.ActionLink("Welcome " + @Session["username"].ToString().ToUpper(), "Details", "Accounts", new { id = int.Parse(Session["user_id"].ToString()) }, null)
-                    </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Logout", "Logout", "Accounts")
-                    </li>
-                </ul>
-                }
             </div>
         </div>
-    </div>
+    </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Diary</p>
         </footer>
     </div>
 

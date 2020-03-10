@@ -15,14 +15,10 @@ namespace Texxty.Repository.Classes
             this.context = new TexxtyDBEntities();
         }
 
-        public bool CheckUsernameAvailable(User user)
-        {
-            return (context.Users.Where(x => x.Username == user.Username).FirstOrDefault() == null);
-        }
+        public bool CheckUsernameAvailable(User user) =>
+            context.Users.Where(x => x.Username == user.Username).FirstOrDefault() == null;
 
-        public bool CheckEmailAvailable(User user)
-        {
-            return (context.Users.Where(x => x.Email == user.Email).FirstOrDefault() == null);
-        }
+        public bool CheckEmailAvailable(User user) =>
+            context.Users.Where(x => x.Email == user.Email).FirstOrDefault() == null;
     }
 }

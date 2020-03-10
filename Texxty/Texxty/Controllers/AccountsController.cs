@@ -98,6 +98,7 @@ namespace Texxty.Controllers
         {
             Session["user_id"] = null;
             Session["username"] = null;
+            Session.Clear();
             return RedirectToAction("Login");
         }
 

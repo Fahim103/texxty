@@ -149,6 +149,7 @@
     <Compile Include="Models\BlogTopic.cs">
       <DependentUpon>TexxtyDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\Blog.cs" />
     <Compile Include="Models\Classes\Post.cs" />
     <Compile Include="Models\Classes\User.cs" />
     <Compile Include="Models\IPostMetaData.cs" />
