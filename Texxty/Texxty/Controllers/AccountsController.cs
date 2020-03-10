@@ -137,7 +137,7 @@ namespace Texxty.Controllers
                 return RedirectToAction("Details", new { id = user.UserID });
 
             }
-            catch(Exception ex)
+            catch
             {
                 return View(user);
             }
@@ -202,7 +202,7 @@ namespace Texxty.Controllers
                     return RedirectToAction("Details", new { id = user.UserID });
 
                 }
-                catch (Exception ex)
+                catch
                 {
                     return View(user);
                 }

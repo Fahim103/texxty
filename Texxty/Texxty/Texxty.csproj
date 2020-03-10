@@ -135,6 +135,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
+    <Compile Include="Controllers\BlogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Global.asax.cs">
@@ -152,6 +153,7 @@
     <Compile Include="Models\Classes\Blog.cs" />
     <Compile Include="Models\Classes\Post.cs" />
     <Compile Include="Models\Classes\User.cs" />
+    <Compile Include="Models\IBlogMetadata.cs" />
     <Compile Include="Models\IPostMetaData.cs" />
     <Compile Include="Models\IUserMetaData.cs" />
     <Compile Include="Models\Post.cs">
@@ -179,7 +181,9 @@
       <DependentUpon>TexxtyDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Classes\TopicRepository.cs" />
     <Compile Include="Repository\Classes\PostRepository.cs" />
+    <Compile Include="Repository\Classes\BlogRepository.cs" />
     <Compile Include="Repository\Classes\UserRepository.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\Classes\Repository.cs" />
@@ -327,8 +331,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
@@ -350,6 +352,11 @@
     <Content Include="Views\Post\Delete.cshtml" />
     <Content Include="Views\Post\Edit.cshtml" />
     <Content Include="Views\Post\Details.cshtml" />
+    <Content Include="Views\Blog\Index.cshtml" />
+    <Content Include="Views\Blog\Create.cshtml" />
+    <Content Include="Views\Home\Feed.cshtml" />
+    <Content Include="Views\Blog\Edit.cshtml" />
+    <Content Include="Views\Blog\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

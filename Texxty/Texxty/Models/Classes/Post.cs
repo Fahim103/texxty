@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
-namespace Texxty.Models.Classes
+namespace Texxty.Models
 {
-    public class Post
+    [MetadataType(typeof(IPostMetaData))]
+    public partial class Post
     {
     }
 }

@@ -20,7 +20,7 @@
                         if (Session["username"] != null)
                         {
                             @:<li class="nav-item"><a class="nav-link" href="#">@Session["username"]</a></li>
-                            @:<li class="nav-item">@Html.ActionLink("Uploads", "Index", new { controller = "Upload" }, new { @class = "nav-link" })</li>
+                            @:<li class="nav-item">@Html.ActionLink("Blogs", "Index", new { controller = "Blog" }, new { @class = "nav-link" })</li>
                             @:<li class="nav-item">@Html.ActionLink("Logout", "Logout", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
                         }
                         else

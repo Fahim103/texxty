@@ -37,9 +37,6 @@ namespace Texxty.Repository.Classes
             {
                 var msg = e.InnerException;
             }
-
-
-            
         }
         public void Update(TEntity entity)
         {
