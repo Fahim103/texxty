@@ -99,6 +99,7 @@ namespace Texxty.Controllers
         {
             Session["user_id"] = null;
             Session["username"] = null;
+            Session.Clear();
             return RedirectToAction("Login");
         }
 
@@ -137,7 +138,7 @@ namespace Texxty.Controllers
                 return RedirectToAction("Details", new { id = user.UserID });
 
             }
-            catch(Exception ex)
+            catch
             {
                 return View(user);
             }
@@ -202,7 +203,7 @@ namespace Texxty.Controllers
                     return RedirectToAction("Details", new { id = user.UserID });
 
                 }
-                catch (Exception ex)
+                catch
                 {
                     return View(user);
                 }
