@@ -134,6 +134,10 @@ namespace Texxty.Controllers
 
             try
             {
+                PostRepository postRepo = new PostRepository();
+
+                postRepo.DeleteByBlog(id);
+
                 repo.Delete(id);
                 return RedirectToAction("Index");
             }

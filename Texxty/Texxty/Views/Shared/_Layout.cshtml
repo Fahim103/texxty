@@ -10,7 +10,12 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
+            @if (Session["username"] != null)
+            {
+            @Html.ActionLink("Texxty", "Feed", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            } else {
             @Html.ActionLink("Texxty", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            }
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -21,16 +26,16 @@
                         {
                             @:@*<li class="nav-item"><a class="nav-link" href="#">@Session["username"]</a></li>*@
                             @:<li class="nav-item">
-                                @Html.ActionLink( @Session["username"].ToString().ToUpper(), "Details", "Accounts", new { id = int.Parse(Session["user_id"].ToString()) }, new { @class = "nav-link"})
+                                @Html.ActionLink(@Session["username"].ToString().ToUpper(), "Details", "Accounts", new { id = int.Parse(Session["user_id"].ToString()) }, new { @class = "nav-link" })
                             @:</li>
-                        <li class="nav-item">@Html.ActionLink("Blogs", "Index", new { controller = "Blog" }, new { @class = "nav-link" })</li>
-                        @:<li class="nav-item">@Html.ActionLink("Logout", "Logout", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
-                    }
-                    else
-                    {
-                        @:<li class="nav-item">@Html.ActionLink("Login", "Login", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
-                        @:<li class="nav-item">@Html.ActionLink("Register", "Register", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
-                    }
+                            <li class="nav-item">@Html.ActionLink("Blogs", "Index", new { controller = "Blog" }, new { @class = "nav-link" })</li>
+                            @:<li class="nav-item">@Html.ActionLink("Logout", "Logout", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
+                        }
+                        else
+                        {
+                            @:<li class="nav-item">@Html.ActionLink("Login", "Login", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
+                            @:<li class="nav-item">@Html.ActionLink("Register", "Register", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
+                        }
                     }
                 </ul>
             </div>

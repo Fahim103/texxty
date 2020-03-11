@@ -80,7 +80,7 @@ namespace Texxty.Controllers
                 {
                     Session["username"] = logged_user.Username;
                     Session["user_id"] = logged_user.UserID;
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Feed", "Home");
                 }
                 else
                 {
@@ -100,7 +100,7 @@ namespace Texxty.Controllers
             Session["user_id"] = null;
             Session["username"] = null;
             Session.Clear();
-            return RedirectToAction("Login");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]

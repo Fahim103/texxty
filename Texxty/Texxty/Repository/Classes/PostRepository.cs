@@ -14,6 +14,17 @@ namespace Texxty.Repository.Classes
         {
             this.context = new TexxtyDBEntities();
         }
+
+        public void DeleteByBlog(int blogId)
+        {
+            var postList = context.Posts.Where(p => p.BlogID == blogId).ToList();
+            foreach (var post in postList)
+            {
+                context.Posts.Remove(post);
+            }
+            context.SaveChanges();
+        }
+
         public List<Post> GetAllPosts(int id) =>
             context.Posts.Where(u => u.BlogID == id).ToList();
 

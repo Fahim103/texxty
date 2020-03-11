@@ -20,16 +20,21 @@ namespace Texxty.Controllers
 
         public ActionResult Index()
         {
-            if (!AuthorizeUser())
-                return RedirectToAction("Login", "Accounts");
+            //if (!AuthorizeUser())
+            //    return RedirectToAction("Login", "Accounts");
 
-            return RedirectToAction("Feed");
+            //return RedirectToAction("Feed");
+            return View();
         }
 
         public ActionResult Feed()
         {
             if (!AuthorizeUser())
                 return RedirectToAction("Login", "Accounts");
+
+            //TopicRepository topicRepo = new TopicRepository();
+            //var topicSelectList = new SelectList(topicRepo.GetAll(), "BlogTopicID", "Name", "1");
+            //ViewBag.topicSelectList = topicSelectList;
 
             return View(postRepository.GetAllPublicPosts());
         }

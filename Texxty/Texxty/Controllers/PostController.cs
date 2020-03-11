@@ -44,7 +44,7 @@ namespace Texxty.Controllers
             return View(postrepo.GetAllPosts(id));
 
         }
-        [HttpGet]
+        [HttpGet, ValidateInput(false)]
         public ActionResult Create(int id)
         {
             if (!AuthorizeUser())
@@ -54,7 +54,7 @@ namespace Texxty.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         public ActionResult Create(Post p, int BlogID)
         {
             if (!AuthorizeUser())
@@ -86,7 +86,7 @@ namespace Texxty.Controllers
             return View(postrepo.Get(id));
         }
 
-        [HttpGet]
+        [HttpGet, ValidateInput(false)]
         public ActionResult Edit(int id)
         {
             if (!AuthorizeUser())
@@ -95,7 +95,7 @@ namespace Texxty.Controllers
             return View(postrepo.Get(id));
         }
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         public ActionResult Edit(Post p)
         {
             if (!AuthorizeUser())
