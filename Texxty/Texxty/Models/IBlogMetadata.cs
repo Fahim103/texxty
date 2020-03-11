@@ -10,7 +10,7 @@ namespace Texxty.Models
     interface IBlogMetadata
     {
         int BlogID { get; set; }
-        [Required(ErrorMessage = "Title is required")]
+        [Required(ErrorMessage = "Blog title is required")]
         string Title { get; set; }
         string Description { get; set; }
         string UrlField { get; set; }

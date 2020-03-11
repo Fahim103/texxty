@@ -41,10 +41,16 @@ namespace Texxty.Controllers
             ViewBag.BlogID = id;
             return View();
         }
-        
+
         [HttpPost]
         public ActionResult Create(Post p, int BlogID)
-        { 
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.BlogID = BlogID;
+                return View();
+            }
+                
             p.ModifiedDate = DateTime.Now;
             p.PublishedDate = DateTime.Now;
             //p.BlogID = blogid;
