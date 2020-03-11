@@ -47,8 +47,11 @@ namespace Texxty.Repository.Classes
                 var posts = context.Posts.Where(x => x.Blog.Private == false).Where(x => x.Draft == false).Where(x => x.Blog.TopicID == topic.TopicID).ToList();
                 if(posts.Count > 0)
                 {
-                    var item = postRepository.Get(posts[0].PostID);
-                    result.Add(item);
+                    for(var i = 0; i<posts.Count; i++)
+                    {
+                        var item = postRepository.Get(posts[i].PostID);
+                        result.Add(item);
+                    }
                 }
             }
 
