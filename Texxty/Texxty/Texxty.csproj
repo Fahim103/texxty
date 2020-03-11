@@ -181,6 +181,7 @@
       <DependentUpon>TexxtyDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Classes\FollowTopicRepository.cs" />
     <Compile Include="Repository\Classes\TopicRepository.cs" />
     <Compile Include="Repository\Classes\PostRepository.cs" />
     <Compile Include="Repository\Classes\BlogRepository.cs" />
@@ -354,11 +355,11 @@
     <Content Include="Views\Post\Details.cshtml" />
     <Content Include="Views\Blog\Index.cshtml" />
     <Content Include="Views\Blog\Create.cshtml" />
-    <Content Include="Views\Home\Feed2.cshtml" />
     <Content Include="Views\Blog\Edit.cshtml" />
     <Content Include="Views\Blog\Delete.cshtml" />
     <Content Include="Views\Post\PostDetails.cshtml" />
     <Content Include="Views\Home\Feed.cshtml" />
+    <Content Include="Views\Home\FollowTopic.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

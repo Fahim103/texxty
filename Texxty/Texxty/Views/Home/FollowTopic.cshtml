@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Texxty.Models.BlogTopic>
+
+@{
+    ViewBag.Title = "FollowTopic";
+}
+
+<h2>Topics</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <table class="table">
+            <tr>
+                <th width="20px"></th>
+                <th>
+                    Topic Name
+                </th>
+            </tr>
+
+            @{
+                foreach (var item in Model)
+                {
+                    <tr>
+                        @if (ViewBag.userSelectedTopics.Contains(item.BlogTopicID))
+                        {
+                            <td><input type="checkbox" id="@item.BlogTopicID" value="@item.BlogTopicID" name="selectedTopics" checked /></td>
+                        }
+                        else
+                        {
+                            <td><input type="checkbox" id="@item.BlogTopicID" value="@item.BlogTopicID" name="selectedTopics" /></td>
+                        }
+                        <td>
+                            <label for="@item.BlogTopicID" style="cursor: pointer;">@Html.DisplayFor(modelItem => item.Name)</label>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-success" />
+                </div>
+            </div>
+        }
+    </div>
+</div>

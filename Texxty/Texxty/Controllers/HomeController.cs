@@ -38,5 +38,56 @@ namespace Texxty.Controllers
 
             return View(postRepository.GetAllPublicPosts());
         }
+
+        public ActionResult FollowTopic()
+        {
+            if (!AuthorizeUser())
+                return RedirectToAction("Login", "Accounts");
+
+            var user_id = int.Parse(Session["user_id"].ToString());
+            
+            var topicRepository = new TopicRepository();
+            var followTopicRepository = new FollowTopicRepository();
+
+            var topicList = topicRepository.GetAll();
+
+            var userSelectedTopics = followTopicRepository.GetTopicsByUser(user_id);
+            List<int> userSelectedTopicIds = new List<int>();
+
+            foreach (var followTopic in userSelectedTopics)
+            {
+                userSelectedTopicIds.Add(followTopic.TopicID);
+            }
+
+            ViewBag.userSelectedTopics = userSelectedTopicIds;
+
+            return View(topicList);
+        }
+
+        [HttpPost]
+        public ActionResult FollowTopic(FormCollection fc)
+        {
+            if (!AuthorizeUser())
+                return RedirectToAction("Login", "Accounts");
+
+            try
+            {
+                var user_id = int.Parse(Session["user_id"].ToString());
+
+                // feed follow
+                var selectedTopics = fc["selectedTopics"].Split(',').ToList();
+
+                FollowTopicRepository topicRepository = new FollowTopicRepository();
+                topicRepository.DeleteByUser(user_id);
+                topicRepository.AddTopics(user_id, selectedTopics);
+
+                return RedirectToAction("Feed");
+            }
+            catch
+            {
+                ViewBag.Message = "Failed to follow the selected topics";
+                return View();
+            }
+        }
     }
 }
