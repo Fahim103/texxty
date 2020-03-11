@@ -16,6 +16,7 @@
     <div>
         <h4>Post</h4>
         <hr />
+        @Html.HiddenFor(model => model.PostID)
         <dl class="dl-horizontal">
             <dt>
                 @Html.DisplayNameFor(model => model.Title)
@@ -80,7 +81,7 @@
     
             <div class="form-actions no-color">
                 <input type="submit" value="Delete" class="btn btn-default" /> |
-                @Html.ActionLink("Back to List", "Index")
+                @Html.ActionLink("Back to List", "Index", new { id = Model.BlogID })
             </div>
         }
     </div>

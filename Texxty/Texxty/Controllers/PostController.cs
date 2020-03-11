@@ -14,50 +14,60 @@ namespace Texxty.Controllers
     {
         private readonly PostRepository postrepo;
         private readonly SlugHelper helper;
-        int blogid;
+        private int blogid { get; set; }
+        //int blogid;
 
         public PostController()
         {
             postrepo = new PostRepository();
             helper = new SlugHelper();
-            blogid = Convert.ToInt32(Session["blogID"]);
+            //blogid = Convert.ToInt32(Session["blogID"]);
         }
 
         
         // GET: Post
         
-        public ActionResult Index()
-        { 
-             return View(postrepo.GetAllPosts(blogid));
+        public ActionResult Index(int id)
+        {
+            //return View(postrepo.GetAllPosts(blogid));
+            blogid = id;
+            ViewBag.BlogID = blogid;
+            return View(postrepo.GetAllPosts(id));
+
         }
         [HttpGet]
-        public ActionResult Create()
-        { return View(); }
+        public ActionResult Create(int id)
+        {
+            ViewBag.BlogID = id;
+            return View();
+        }
+        
         [HttpPost]
-        public ActionResult Create(Post p)
-        { p.ModifiedDate = DateTime.Now;
+        public ActionResult Create(Post p, int BlogID)
+        { 
+            p.ModifiedDate = DateTime.Now;
             p.PublishedDate = DateTime.Now;
-            p.BlogID = blogid;
+            //p.BlogID = blogid;
+            p.BlogID = BlogID;
             p.UrlField = helper.GenerateSlug(p.Title.ToString());
             if (p.Draft==false)
             { }
             postrepo.Insert(p);
-            return RedirectToAction("Index");
-
-
-
-
+            return RedirectToAction("Index", new { id = p.BlogID });
         }
+
         [HttpGet]
         public ActionResult Details(int id)
         {
             return View(postrepo.Get(id));
         }
+
         [HttpGet]
         public ActionResult Edit(int id)
         {
             return View(postrepo.Get(id));
         }
+
         [HttpPost]
         public ActionResult Edit(Post p)
         {
@@ -70,8 +80,9 @@ namespace Texxty.Controllers
             p.UrlField = helper.GenerateSlug(p.Title.ToString());
                 
             postrepo.Update(p);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = p.BlogID});
         }
+
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -81,8 +92,9 @@ namespace Texxty.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult ConfirmDelete(int id)
         {
+            var post = postrepo.Get(id);
             postrepo.Delete(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = post.BlogID });
         }
 
     }
