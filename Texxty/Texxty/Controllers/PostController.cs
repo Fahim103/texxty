@@ -97,5 +97,18 @@ namespace Texxty.Controllers
             return RedirectToAction("Index", new { id = post.BlogID });
         }
 
+
+        // This method is for view only from feed to post details
+        [HttpGet]
+        public ActionResult PostDetails(int id)
+        {
+            var model = postrepo.Get(id);
+            var blodId = model.BlogID;
+            var blogRepo = new BlogRepository();
+            var blogInfo = blogRepo.Get(blodId);
+            ViewBag.UserInfo = blogInfo.User.FullName;            
+            return View(model);
+        }
+
     }
 }

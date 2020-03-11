@@ -25,7 +25,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.ActionLink(item.Title, "Details", new { id = item.PostID })
+            @Html.ActionLink(item.Title, "PostDetails", "Post",  new { id = item.PostID }, null)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PublishedDate)
