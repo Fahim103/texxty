@@ -17,6 +17,12 @@ namespace Texxty.Controllers
         private int blogid { get; set; }
         //int blogid;
 
+        [NonAction]
+        public bool AuthorizeUser()
+        {
+            return Session["user_id"] != null;
+        }
+
         public PostController()
         {
             postrepo = new PostRepository();
@@ -29,6 +35,9 @@ namespace Texxty.Controllers
         
         public ActionResult Index(int id)
         {
+            if (!AuthorizeUser())
+                return RedirectToAction("Login", "Accounts");
+
             //return View(postrepo.GetAllPosts(blogid));
             blogid = id;
             ViewBag.BlogID = blogid;
@@ -38,6 +47,9 @@ namespace Texxty.Controllers
         [HttpGet]
         public ActionResult Create(int id)
         {
+            if (!AuthorizeUser())
+                return RedirectToAction("Login", "Accounts");
+
             ViewBag.BlogID = id;
             return View();
         }
@@ -45,6 +57,9 @@ namespace Texxty.Controllers
         [HttpPost]
         public ActionResult Create(Post p, int BlogID)
         {
+            if (!AuthorizeUser())
+                return RedirectToAction("Login", "Accounts");
+
             if (!ModelState.IsValid)
             {
                 ViewBag.BlogID = BlogID;
@@ -65,19 +80,26 @@ namespace Texxty.Controllers
         [HttpGet]
         public ActionResult Details(int id)
         {
+            if (!AuthorizeUser())
+                return RedirectToAction("Login", "Accounts");
+
             return View(postrepo.Get(id));
         }
 
         [HttpGet]
         public ActionResult Edit(int id)
         {
+            if (!AuthorizeUser())
+                return RedirectToAction("Login", "Accounts");
+
             return View(postrepo.Get(id));
         }
 
         [HttpPost]
         public ActionResult Edit(Post p)
         {
-            
+            if (!AuthorizeUser())
+                return RedirectToAction("Login", "Accounts");
 
             if (!ModelState.IsValid)
                 return View(p);
@@ -92,12 +114,18 @@ namespace Texxty.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
+            if (!AuthorizeUser())
+                return RedirectToAction("Login", "Accounts");
+
             return View(postrepo.Get(id));
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult ConfirmDelete(int id)
         {
+            if (!AuthorizeUser())
+                return RedirectToAction("Login", "Accounts");
+
             var post = postrepo.Get(id);
             postrepo.Delete(id);
             return RedirectToAction("Index", new { id = post.BlogID });
