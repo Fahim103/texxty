@@ -26,7 +26,8 @@ namespace Texxty.Controllers
             if (!AuthorizeUser())
                 return RedirectToAction("Login", "Accounts");
 
-            return View(repo.GetAll());
+            //return View(repo.GetAll());
+            return View(repo.GetAllBlogsByID(Int32.Parse(Session["user_id"].ToString())));
         }
 
         // GET: Blog/Details/5

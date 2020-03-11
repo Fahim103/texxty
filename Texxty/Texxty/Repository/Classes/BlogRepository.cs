@@ -17,5 +17,10 @@ namespace Texxty.Repository.Classes
 
         public bool CheckBlogPrivate(int id) =>
             context.Blogs.Where(b => b.BlogID == id).FirstOrDefault().Private;
+
+        public List<Blog> GetAllBlogsByID(int id)
+        {
+            return context.Blogs.Where(x => x.UserID == id).ToList();
+        }
     }
 }

@@ -18,7 +18,7 @@ namespace Texxty.Repository.Classes
             context.Posts.Where(u => u.BlogID == id).ToList();
 
         public List<Post> GetAllPublicPosts() =>
-            context.Posts.Where(u => u.Blog.Private == false).ToList();
+            context.Posts.Where(u => u.Blog.Private == false).Where(u => u.Draft == false).ToList();
 
         public List<Post> GetAllPostsByTopic(int topicId) =>
             context.Posts.Where(u => u.Blog.TopicID == topicId).ToList();
