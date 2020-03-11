@@ -1,74 +1,57 @@
 ﻿@model Texxty.Models.Post
 
 @{
-    Layout = null;
+    ViewBag.Title = "Create";
 }
 
-<!DOCTYPE html>
+<h3>Create Post</h3>
+<hr />
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
-</head>
-<body>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
-    
-    
-    @using (Html.BeginForm()) 
+<div class="container">
+
+    @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        
-    <div class="form-horizontal">
-        <h4>Post</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.Hidden("BlogID", (int)ViewBag.BlogID)
-        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div>
 
-
-            <textarea name="Title" cols="100" placeholder="Title Here"> </textarea>
-
-            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PostContent, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div>
-                <textarea name="PostContent" cols="100" rows="30"> </textarea>
-
-                @Html.ValidationMessageFor(model => model.PostContent, "", new { @class = "text-danger" })
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Hidden("BlogID", (int)ViewBag.BlogID)
+                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div>
+                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Post title..." } })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Draft, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Draft)
-                    @Html.ValidationMessageFor(model => model.Draft, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PostContent, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div>
+                    <textarea name="PostContent" cols="100" rows="10" placeholder = "Blog contents..." class = "form-control"> </textarea>
+                    @Html.ValidationMessageFor(model => model.PostContent, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Draft, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.Draft)
+                        @Html.ValidationMessageFor(model => model.Draft, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-success" />
                 </div>
             </div>
         </div>
 
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-        
     }
-    
+
     <div>
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to List", "Index",  new { id = ViewBag.BlogID })
     </div>
-</body>
-</html>
+</div>
