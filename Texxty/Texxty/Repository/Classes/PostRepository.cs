@@ -33,5 +33,26 @@ namespace Texxty.Repository.Classes
 
         public List<Post> GetAllPostsByTopic(int topicId) =>
             context.Posts.Where(u => u.Blog.TopicID == topicId).ToList();
+
+
+        public List<Post> GetAllPostByTopicFollow(int user_id)
+        {
+            var followTopicRepository = new FollowTopicRepository();
+            PostRepository postRepository = new PostRepository();
+            List<TopicFollow> topicFollows =  followTopicRepository.GetTopicsByUser(user_id);
+            List<Post> result = new List<Post>();
+
+            foreach(var topic in topicFollows)
+            {
+                var posts = context.Posts.Where(x => x.Blog.Private == false).Where(x => x.Draft == false).Where(x => x.Blog.TopicID == topic.TopicID).ToList();
+                if(posts.Count > 0)
+                {
+                    var item = postRepository.Get(posts[0].PostID);
+                    result.Add(item);
+                }
+            }
+
+            return result;
+        }
     }
 }

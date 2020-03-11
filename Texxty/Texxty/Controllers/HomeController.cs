@@ -36,7 +36,14 @@ namespace Texxty.Controllers
             //var topicSelectList = new SelectList(topicRepo.GetAll(), "BlogTopicID", "Name", "1");
             //ViewBag.topicSelectList = topicSelectList;
 
-            return View(postRepository.GetAllPublicPosts());
+            var user_id = int.Parse(Session["user_id"].ToString());
+
+            PostRepository postRepository = new PostRepository();
+            var item = postRepository.GetAllPostByTopicFollow(user_id);
+
+
+            //return View(postRepository.GetAllPublicPosts());
+            return View(item);
         }
 
         public ActionResult FollowTopic()
