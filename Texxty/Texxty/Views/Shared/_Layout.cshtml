@@ -24,17 +24,34 @@
                     @if (Session["username"] != null)
                     {
                         <li class="nav-item">@Html.ActionLink("Blogs", "Index", new { controller = "Blog" }, new { @class = "nav-link" })</li>
+
                     }
                 </ul>
+
+                @using (Html.BeginForm("ActionName",
+                    "ControllerName",
+                    FormMethod.Post,
+                    new { @class = "form-inline mx-2" }))
+                {
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                }
 
                 <ul class="nav navbar-nav navbar-right">
                     @{
                         if (Session["username"] != null)
                         {
-                            <li class="nav-item">
-                                @Html.ActionLink(@Session["username"].ToString(), "Details", "Accounts", new { id = int.Parse(Session["user_id"].ToString()) }, new { @class = "nav-link" })
+
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @Session["username"]
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    @Html.ActionLink("Profile", "Details", "Accounts", new { id = int.Parse(Session["user_id"].ToString()) }, new { @class = "dropdown-item" })
+                                    @Html.ActionLink("Logout", "Logout", new { controller = "Accounts" }, new { @class = "dropdown-item" })
+                                </div>
                             </li>
-                            <li class="nav-item">@Html.ActionLink("Logout", "Logout", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
                         }
                         else
                         {
