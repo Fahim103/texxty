@@ -21,20 +21,25 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
+                    @if (Session["username"] != null)
+                    {
+                        <li class="nav-item">@Html.ActionLink("Blogs", "Index", new { controller = "Blog" }, new { @class = "nav-link" })</li>
+                    }
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
                     @{
                         if (Session["username"] != null)
                         {
-                            @:@*<li class="nav-item"><a class="nav-link" href="#">@Session["username"]</a></li>*@
-                            @:<li class="nav-item">
-                                @Html.ActionLink(@Session["username"].ToString().ToUpper(), "Details", "Accounts", new { id = int.Parse(Session["user_id"].ToString()) }, new { @class = "nav-link" })
-                            @:</li>
-                            <li class="nav-item">@Html.ActionLink("Blogs", "Index", new { controller = "Blog" }, new { @class = "nav-link" })</li>
-                            @:<li class="nav-item">@Html.ActionLink("Logout", "Logout", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
+                            <li class="nav-item">
+                                @Html.ActionLink(@Session["username"].ToString(), "Details", "Accounts", new { id = int.Parse(Session["user_id"].ToString()) }, new { @class = "nav-link" })
+                            </li>
+                            <li class="nav-item">@Html.ActionLink("Logout", "Logout", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
                         }
                         else
                         {
-                            @:<li class="nav-item">@Html.ActionLink("Login", "Login", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
-                            @:<li class="nav-item">@Html.ActionLink("Register", "Register", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Login", "Login", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Register", "Register", new { controller = "Accounts" }, new { @class = "nav-link" })</li>
                         }
                     }
                 </ul>
