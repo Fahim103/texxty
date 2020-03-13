@@ -7,7 +7,8 @@
 <h2>My Blogs</h2>
 
 <p>
-    @Html.ActionLink("Create a new Blog", "Create", null, new { @class = "btn btn-outline-primary btn-sm" })
+    @if (Session["username"] != null) {
+    @Html.ActionLink("Create a new Blog", "Create", null, new { @class = "btn btn-outline-primary btn-sm" })}
 </p>
 <table class="table">
     <tr>
@@ -41,8 +42,12 @@
             @Html.DisplayFor(modelItem => item.BlogTopic.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.BlogID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BlogID })
+
+            @if (Session["username"] != null)
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.BlogID }) @:|
+                @Html.ActionLink("Delete", "Delete", new { id = item.BlogID }) }
+
         </td>
     </tr>
 }

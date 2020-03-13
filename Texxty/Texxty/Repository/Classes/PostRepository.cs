@@ -34,7 +34,19 @@ namespace Texxty.Repository.Classes
         public List<Post> GetAllPostsByTopic(int topicId) =>
             context.Posts.Where(u => u.Blog.TopicID == topicId).ToList();
 
+        public void  CountViews(int postid)
+        {
+            var viewcount= context.Posts.Where(u => u.PostID == postid).Select(p => p.ViewCount).ToArray();
+            viewcount[0]++;
+            var col = context.Posts.Where(u => u.PostID == postid);
+            foreach (var item in col)
+            {
 
+
+                 item.ViewCount  = viewcount[0]; } 
+                context.SaveChanges();
+
+        }
         public List<Post> GetAllPostByTopicFollow(int user_id)
         {
             var followTopicRepository = new FollowTopicRepository();
@@ -57,5 +69,6 @@ namespace Texxty.Repository.Classes
 
             return result;
         }
+        
     }
 }

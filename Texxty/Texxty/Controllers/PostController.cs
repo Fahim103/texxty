@@ -82,7 +82,7 @@ namespace Texxty.Controllers
         {
             if (!AuthorizeUser())
                 return RedirectToAction("Login", "Accounts");
-
+               
             return View(postrepo.Get(id));
         }
 
@@ -136,9 +136,13 @@ namespace Texxty.Controllers
         [HttpGet]
         public ActionResult PostDetails(int id)
         {
+            postrepo.CountViews(id);
+
+
             var model = postrepo.Get(id);
             var blodId = model.BlogID;
             var blogRepo = new BlogRepository();
+            blogRepo.CountViews(blodId);
             var blogInfo = blogRepo.Get(blodId);
             ViewBag.UserInfo = blogInfo.User.FullName;            
             return View(model);
