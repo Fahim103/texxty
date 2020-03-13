@@ -28,6 +28,7 @@ namespace Texxty.Models
         public bool Private { get; set; }
         public int UserID { get; set; }
         public int TopicID { get; set; }
+        public int ViewCount { get; set; }
     
         public virtual BlogTopic BlogTopic { get; set; }
         public virtual User User { get; set; }

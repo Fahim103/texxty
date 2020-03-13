@@ -22,6 +22,7 @@ namespace Texxty.Models
         public bool Draft { get; set; }
         public string PostContent { get; set; }
         public int BlogID { get; set; }
+        public int ViewCount { get; set; }
     
         public virtual Blog Blog { get; set; }
     }
