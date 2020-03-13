@@ -146,5 +146,14 @@ namespace Texxty.Controllers
                 return View();
             }
         }
+
+        // This method is for view only from search to blog details
+        [HttpGet]
+        public ActionResult BlogDetails(int id)
+        {
+            var model = repo.Get(id);
+            ViewBag.UserInfo = model.User.FullName;
+            return View(model);
+        }
     }
 }

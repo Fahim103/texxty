@@ -12,9 +12,11 @@
         <div class="container">
             @if (Session["username"] != null)
             {
-            @Html.ActionLink("Texxty", "Feed", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            } else {
-            @Html.ActionLink("Texxty", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Texxty", "Feed", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            } 
+            else 
+            {
+                @Html.ActionLink("Texxty", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             }
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -28,12 +30,12 @@
                     }
                 </ul>
 
-                @using (Html.BeginForm("ActionName",
-                    "ControllerName",
-                    FormMethod.Post,
+                @using (Html.BeginForm("SearchContents",
+                    "Search",
+                    FormMethod.Get,
                     new { @class = "form-inline mx-2" }))
                 {
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searchText">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 }
 
