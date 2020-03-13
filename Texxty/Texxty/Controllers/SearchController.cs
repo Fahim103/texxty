@@ -27,7 +27,7 @@ namespace Texxty.Controllers
         public ActionResult SearchContents(string searchText)
         {
             var blogMatch = context.Blogs.Where(b => b.Title.Contains(searchText)).Where(b => b.Private == false).ToList();
-            var postMatch = context.Posts.Where((p => p.Title.Contains(searchText) || p.PostContent.Contains(searchText))).Where(p => p.Draft == false).ToList();
+            var postMatch = context.Posts.Where(p => p.Blog.Private == false).Where((p => p.Title.Contains(searchText) || p.PostContent.Contains(searchText))).Where(p => p.Draft == false).ToList();
 
             SearchViewModel model = new SearchViewModel();
 
