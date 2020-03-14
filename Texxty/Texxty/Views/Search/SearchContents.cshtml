@@ -1,0 +1,44 @@
+﻿@model Texxty.Models.ViewModel.SearchViewModel
+
+@{
+    ViewBag.Title = "Contents";
+}
+
+<h2>Contents</h2>
+<hr />
+
+<table class="table">
+    <tr>
+        <th>
+            Blog Title
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Blogs)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Title, "BlogDetails", "Blog", new { id = item.BlogID }, null)
+            </td>
+        </tr>
+    }
+
+</table>
+
+<table class="table">
+    <tr>
+        <th>
+            Post Title
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Posts)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Title, "PostDetails", "Post", new { id = item.PostID }, null)
+            </td>
+        </tr>
+    }
+
+</table>
