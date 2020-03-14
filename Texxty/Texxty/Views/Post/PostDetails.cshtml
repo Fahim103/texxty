@@ -6,7 +6,7 @@
 
 <h2>Post Details</h2>
 
-<div>
+<div id="postDetails">
     <h4>Post by @ViewBag.UserInfo</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -49,3 +49,11 @@
         @Html.ActionLink("Back to Feed", "Feed", "Home")
     }
 </p>
+
+<button type="button" onclick="print()">Print</button>
+
+<script>
+    function print() {
+        printJS("postDetails", "html");
+    }
+</script>

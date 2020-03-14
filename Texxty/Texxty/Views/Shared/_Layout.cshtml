@@ -13,8 +13,8 @@
             @if (Session["username"] != null)
             {
                 @Html.ActionLink("Texxty", "Feed", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            } 
-            else 
+            }
+            else
             {
                 @Html.ActionLink("Texxty", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             }
@@ -75,6 +75,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/scripts/print.min.js")
     @RenderSection("scripts", required: false)
 </body>
 </html>
