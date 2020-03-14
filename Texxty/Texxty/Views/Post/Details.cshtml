@@ -1,6 +1,6 @@
 ﻿@model Texxty.Models.Post
 
-    <div>
+    <div id="postDetails">
         <h4>Post</h4>
         <hr />
         <dl class="dl-horizontal">
@@ -54,3 +54,11 @@
         @Html.ActionLink("Edit", "Edit", new { id = Model.PostID }) |
         @Html.ActionLink("Back to List", "Index", new { id = Model.BlogID })
     </p>
+
+    <button type="button" onclick="print()">Print</button>
+
+    <script>
+        function print() {
+            printJS("postDetails", "html");
+        }
+    </script>
