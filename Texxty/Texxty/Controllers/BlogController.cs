@@ -115,7 +115,7 @@ namespace Texxty.Controllers
                 return View();
             }
         }
-
+            
         // GET: Blog/Delete/5
         public ActionResult Delete(int id)
         {
