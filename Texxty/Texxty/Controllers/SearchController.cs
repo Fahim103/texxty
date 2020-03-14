@@ -29,12 +29,14 @@ namespace Texxty.Controllers
             var blogMatch = context.Blogs.Where(b => b.Title.Contains(searchText)).Where(b => b.Private == false).ToList();
             var postMatch = context.Posts.Where(p => p.Blog.Private == false).Where((p => p.Title.Contains(searchText) || p.PostContent.Contains(searchText))).Where(p => p.Draft == false).ToList();
 
-            SearchViewModel model = new SearchViewModel();
-
-
+            SearchViewModel model = new SearchViewModel
+            {
+                Blogs = new List<Blog>(),
+                Posts = new List<Post>()
+            };
+            
             if (blogMatch.Count > 0)
             {
-                model.Blogs = new List<Blog>();
                 for (var i = 0; i < blogMatch.Count; i++)
                 {
                     var item = blogRepository.Get(blogMatch[i].BlogID);
@@ -44,7 +46,6 @@ namespace Texxty.Controllers
 
             if (postMatch.Count > 0)
             {
-                model.Posts = new List<Post>();
                 for (var i = 0; i < postMatch.Count; i++)
                 {
                     var item = postRepository.Get(postMatch[i].PostID);
