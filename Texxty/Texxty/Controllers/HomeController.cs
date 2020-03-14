@@ -10,6 +10,15 @@ namespace Texxty.Controllers
 {
     public class HomeController : Controller
     {
+        [NonAction]
+        public static string WithMaxLength(string value, int maxLength)
+        {
+            if (value.Length < maxLength)
+                return value.Substring(0, Math.Min(value.Length, maxLength));
+            else
+                return value.Substring(0, Math.Min(value.Length, maxLength)) + "...";
+        }
+
         private readonly PostRepository postRepository = new PostRepository();
 
         [NonAction]
@@ -32,18 +41,17 @@ namespace Texxty.Controllers
             if (!AuthorizeUser())
                 return RedirectToAction("Login", "Accounts");
 
-            //TopicRepository topicRepo = new TopicRepository();
-            //var topicSelectList = new SelectList(topicRepo.GetAll(), "BlogTopicID", "Name", "1");
-            //ViewBag.topicSelectList = topicSelectList;
-
             var user_id = int.Parse(Session["user_id"].ToString());
 
             PostRepository postRepository = new PostRepository();
-            var item = postRepository.GetAllPostByTopicFollow(user_id);
+            var posts = postRepository.GetAllPostByTopicFollow(user_id);
 
+            foreach (var post in posts)
+            {
+                post.PostContent = WithMaxLength(post.PostContent, 500);
+            }
 
-            //return View(postRepository.GetAllPublicPosts());
-            return View(item);
+            return View(posts);
         }
 
         public ActionResult FollowTopic()
