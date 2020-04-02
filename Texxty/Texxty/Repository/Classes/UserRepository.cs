@@ -6,7 +6,7 @@ using Texxty.Models;
 
 namespace Texxty.Repository.Classes
 {
-    public class UserRepository : Repository<User>
+    public class UserRepository : Repository<User>, IUserRepository
     {
         private readonly TexxtyDBEntities context;
 

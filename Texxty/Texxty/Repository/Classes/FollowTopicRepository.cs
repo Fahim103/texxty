@@ -6,7 +6,7 @@ using Texxty.Models;
 
 namespace Texxty.Repository.Classes
 {
-    public class FollowTopicRepository : Repository<TopicFollow>
+    public class FollowTopicRepository : Repository<TopicFollow>, IFollowTopicRepository
     {
         private readonly TexxtyDBEntities context;
 

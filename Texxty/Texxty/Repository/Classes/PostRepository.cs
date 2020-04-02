@@ -6,7 +6,7 @@ using Texxty.Models;
 
 namespace Texxty.Repository.Classes
 {
-    public class PostRepository : Repository<Post>
+    public class PostRepository : Repository<Post>, IPostRepository
     {
         private readonly TexxtyDBEntities context;
 
