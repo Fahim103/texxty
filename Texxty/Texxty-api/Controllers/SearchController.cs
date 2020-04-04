@@ -11,12 +11,14 @@ namespace Texxty_api.Controllers
     public class SearchController : ApiController
     {
 
+        [Route("api/Search/{search}")]
         public IHttpActionResult GetSearchContents(string search)
         {
             SearchUtility _searchUtility = new SearchUtility();
             return Ok(_searchUtility.GetBlogAndPostList(search));
         }
 
+        [Route("api/Search/{entity}/{search}")]
         public IHttpActionResult GetSearchContents(string entity, string search)
         {
             SearchUtility _searchUtility = new SearchUtility();
