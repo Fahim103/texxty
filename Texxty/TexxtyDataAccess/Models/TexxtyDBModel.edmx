@@ -1,0 +1,490 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TexxtyDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Blog">
+          <Key>
+            <PropertyRef Name="BlogID" />
+          </Key>
+          <Property Name="BlogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Description" Type="text" />
+          <Property Name="UrlField" Type="varchar(max)" Nullable="false" />
+          <Property Name="Private" Type="bit" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="TopicID" Type="int" Nullable="false" />
+          <Property Name="ViewCount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BlogFollow">
+          <Key>
+            <PropertyRef Name="BlogFollowID" />
+          </Key>
+          <Property Name="BlogFollowID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BlogID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BlogTopic">
+          <Key>
+            <PropertyRef Name="BlogTopicID" />
+          </Key>
+          <Property Name="BlogTopicID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="PublishedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="UrlField" Type="varchar(max)" Nullable="false" />
+          <Property Name="Draft" Type="bit" Nullable="false" />
+          <Property Name="PostContent" Type="text" Nullable="false" />
+          <Property Name="BlogID" Type="int" Nullable="false" />
+          <Property Name="ViewCount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TopicFollow">
+          <Key>
+            <PropertyRef Name="TopicFollowID" />
+          </Key>
+          <Property Name="TopicFollowID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TopicID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar(max)" Nullable="false" />
+          <Property Name="FullName" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="ActiveStatus" Type="bit" Nullable="false" />
+          <Property Name="Token" Type="varchar(max)" Nullable="false" />
+          <Property Name="Role" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Blog_BlogTopic">
+          <End Role="BlogTopic" Type="Self.BlogTopic" Multiplicity="1" />
+          <End Role="Blog" Type="Self.Blog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BlogTopic">
+              <PropertyRef Name="BlogTopicID" />
+            </Principal>
+            <Dependent Role="Blog">
+              <PropertyRef Name="TopicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Blog_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Blog" Type="Self.Blog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Blog">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BlogFollow_Blog">
+          <End Role="Blog" Type="Self.Blog" Multiplicity="1" />
+          <End Role="BlogFollow" Type="Self.BlogFollow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Blog">
+              <PropertyRef Name="BlogID" />
+            </Principal>
+            <Dependent Role="BlogFollow">
+              <PropertyRef Name="BlogID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BlogFollow_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="BlogFollow" Type="Self.BlogFollow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="BlogFollow">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Post_Blog">
+          <End Role="Blog" Type="Self.Blog" Multiplicity="1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Blog">
+              <PropertyRef Name="BlogID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="BlogID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TopicFollow_BlogTopic">
+          <End Role="BlogTopic" Type="Self.BlogTopic" Multiplicity="1" />
+          <End Role="TopicFollow" Type="Self.TopicFollow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BlogTopic">
+              <PropertyRef Name="BlogTopicID" />
+            </Principal>
+            <Dependent Role="TopicFollow">
+              <PropertyRef Name="TopicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TopicFollow_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="TopicFollow" Type="Self.TopicFollow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="TopicFollow">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TexxtyDBModelStoreContainer">
+          <EntitySet Name="Blog" EntityType="Self.Blog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BlogFollow" EntityType="Self.BlogFollow" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BlogTopic" EntityType="Self.BlogTopic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TopicFollow" EntityType="Self.TopicFollow" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Blog_BlogTopic" Association="Self.FK_Blog_BlogTopic">
+            <End Role="BlogTopic" EntitySet="BlogTopic" />
+            <End Role="Blog" EntitySet="Blog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Blog_User" Association="Self.FK_Blog_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Blog" EntitySet="Blog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BlogFollow_Blog" Association="Self.FK_BlogFollow_Blog">
+            <End Role="Blog" EntitySet="Blog" />
+            <End Role="BlogFollow" EntitySet="BlogFollow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BlogFollow_User" Association="Self.FK_BlogFollow_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="BlogFollow" EntitySet="BlogFollow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Post_Blog" Association="Self.FK_Post_Blog">
+            <End Role="Blog" EntitySet="Blog" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TopicFollow_BlogTopic" Association="Self.FK_TopicFollow_BlogTopic">
+            <End Role="BlogTopic" EntitySet="BlogTopic" />
+            <End Role="TopicFollow" EntitySet="TopicFollow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TopicFollow_User" Association="Self.FK_TopicFollow_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="TopicFollow" EntitySet="TopicFollow" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TexxtyDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Blog">
+          <Key>
+            <PropertyRef Name="BlogID" />
+          </Key>
+          <Property Name="BlogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="UrlField" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Private" Type="Boolean" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="TopicID" Type="Int32" Nullable="false" />
+          <Property Name="ViewCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BlogTopic" Relationship="Self.FK_Blog_BlogTopic" FromRole="Blog" ToRole="BlogTopic" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Blog_User" FromRole="Blog" ToRole="User" />
+          <NavigationProperty Name="BlogFollows" Relationship="Self.FK_BlogFollow_Blog" FromRole="Blog" ToRole="BlogFollow" />
+          <NavigationProperty Name="Posts" Relationship="Self.FK_Post_Blog" FromRole="Blog" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="BlogFollow">
+          <Key>
+            <PropertyRef Name="BlogFollowID" />
+          </Key>
+          <Property Name="BlogFollowID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BlogID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Blog" Relationship="Self.FK_BlogFollow_Blog" FromRole="BlogFollow" ToRole="Blog" />
+          <NavigationProperty Name="User" Relationship="Self.FK_BlogFollow_User" FromRole="BlogFollow" ToRole="User" />
+        </EntityType>
+        <EntityType Name="BlogTopic">
+          <Key>
+            <PropertyRef Name="BlogTopicID" />
+          </Key>
+          <Property Name="BlogTopicID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Blogs" Relationship="Self.FK_Blog_BlogTopic" FromRole="BlogTopic" ToRole="Blog" />
+          <NavigationProperty Name="TopicFollows" Relationship="Self.FK_TopicFollow_BlogTopic" FromRole="BlogTopic" ToRole="TopicFollow" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PublishedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UrlField" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Draft" Type="Boolean" Nullable="false" />
+          <Property Name="PostContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BlogID" Type="Int32" Nullable="false" />
+          <Property Name="ViewCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Blog" Relationship="Self.FK_Post_Blog" FromRole="Post" ToRole="Blog" />
+        </EntityType>
+        <EntityType Name="TopicFollow">
+          <Key>
+            <PropertyRef Name="TopicFollowID" />
+          </Key>
+          <Property Name="TopicFollowID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TopicID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BlogTopic" Relationship="Self.FK_TopicFollow_BlogTopic" FromRole="TopicFollow" ToRole="BlogTopic" />
+          <NavigationProperty Name="User" Relationship="Self.FK_TopicFollow_User" FromRole="TopicFollow" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ActiveStatus" Type="Boolean" Nullable="false" />
+          <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Blogs" Relationship="Self.FK_Blog_User" FromRole="User" ToRole="Blog" />
+          <NavigationProperty Name="BlogFollows" Relationship="Self.FK_BlogFollow_User" FromRole="User" ToRole="BlogFollow" />
+          <NavigationProperty Name="TopicFollows" Relationship="Self.FK_TopicFollow_User" FromRole="User" ToRole="TopicFollow" />
+          <Property Name="Role" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Blog_BlogTopic">
+          <End Role="BlogTopic" Type="Self.BlogTopic" Multiplicity="1" />
+          <End Role="Blog" Type="Self.Blog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BlogTopic">
+              <PropertyRef Name="BlogTopicID" />
+            </Principal>
+            <Dependent Role="Blog">
+              <PropertyRef Name="TopicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Blog_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Blog" Type="Self.Blog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Blog">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BlogFollow_Blog">
+          <End Role="Blog" Type="Self.Blog" Multiplicity="1" />
+          <End Role="BlogFollow" Type="Self.BlogFollow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Blog">
+              <PropertyRef Name="BlogID" />
+            </Principal>
+            <Dependent Role="BlogFollow">
+              <PropertyRef Name="BlogID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Post_Blog">
+          <End Role="Blog" Type="Self.Blog" Multiplicity="1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Blog">
+              <PropertyRef Name="BlogID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="BlogID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BlogFollow_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="BlogFollow" Type="Self.BlogFollow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="BlogFollow">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TopicFollow_BlogTopic">
+          <End Role="BlogTopic" Type="Self.BlogTopic" Multiplicity="1" />
+          <End Role="TopicFollow" Type="Self.TopicFollow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BlogTopic">
+              <PropertyRef Name="BlogTopicID" />
+            </Principal>
+            <Dependent Role="TopicFollow">
+              <PropertyRef Name="TopicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TopicFollow_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="TopicFollow" Type="Self.TopicFollow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="TopicFollow">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TexxtyDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Blogs" EntityType="Self.Blog" />
+          <EntitySet Name="BlogFollows" EntityType="Self.BlogFollow" />
+          <EntitySet Name="BlogTopics" EntityType="Self.BlogTopic" />
+          <EntitySet Name="Posts" EntityType="Self.Post" />
+          <EntitySet Name="TopicFollows" EntityType="Self.TopicFollow" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_Blog_BlogTopic" Association="Self.FK_Blog_BlogTopic">
+            <End Role="BlogTopic" EntitySet="BlogTopics" />
+            <End Role="Blog" EntitySet="Blogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Blog_User" Association="Self.FK_Blog_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Blog" EntitySet="Blogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BlogFollow_Blog" Association="Self.FK_BlogFollow_Blog">
+            <End Role="Blog" EntitySet="Blogs" />
+            <End Role="BlogFollow" EntitySet="BlogFollows" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Post_Blog" Association="Self.FK_Post_Blog">
+            <End Role="Blog" EntitySet="Blogs" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BlogFollow_User" Association="Self.FK_BlogFollow_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="BlogFollow" EntitySet="BlogFollows" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TopicFollow_BlogTopic" Association="Self.FK_TopicFollow_BlogTopic">
+            <End Role="BlogTopic" EntitySet="BlogTopics" />
+            <End Role="TopicFollow" EntitySet="TopicFollows" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TopicFollow_User" Association="Self.FK_TopicFollow_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="TopicFollow" EntitySet="TopicFollows" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TexxtyDBModelStoreContainer" CdmEntityContainer="TexxtyDBEntities">
+          <EntitySetMapping Name="Blogs">
+            <EntityTypeMapping TypeName="TexxtyDBModel.Blog">
+              <MappingFragment StoreEntitySet="Blog">
+                <ScalarProperty Name="BlogID" ColumnName="BlogID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="UrlField" ColumnName="UrlField" />
+                <ScalarProperty Name="Private" ColumnName="Private" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BlogFollows">
+            <EntityTypeMapping TypeName="TexxtyDBModel.BlogFollow">
+              <MappingFragment StoreEntitySet="BlogFollow">
+                <ScalarProperty Name="BlogFollowID" ColumnName="BlogFollowID" />
+                <ScalarProperty Name="BlogID" ColumnName="BlogID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BlogTopics">
+            <EntityTypeMapping TypeName="TexxtyDBModel.BlogTopic">
+              <MappingFragment StoreEntitySet="BlogTopic">
+                <ScalarProperty Name="BlogTopicID" ColumnName="BlogTopicID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Posts">
+            <EntityTypeMapping TypeName="TexxtyDBModel.Post">
+              <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="PublishedDate" ColumnName="PublishedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="UrlField" ColumnName="UrlField" />
+                <ScalarProperty Name="Draft" ColumnName="Draft" />
+                <ScalarProperty Name="PostContent" ColumnName="PostContent" />
+                <ScalarProperty Name="BlogID" ColumnName="BlogID" />
+                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TopicFollows">
+            <EntityTypeMapping TypeName="TexxtyDBModel.TopicFollow">
+              <MappingFragment StoreEntitySet="TopicFollow">
+                <ScalarProperty Name="TopicFollowID" ColumnName="TopicFollowID" />
+                <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="TexxtyDBModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

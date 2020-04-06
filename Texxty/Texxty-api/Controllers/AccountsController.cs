@@ -7,42 +7,79 @@ using System.Text;
 using System.Threading;
 using System.Web.Http;
 using Texxty_api.Attributes;
-using Texxty_api.Models;
-using Texxty_api.Models.Utilities;
-using Texxty_api.Repository.Classes;
+using TexxtyDataAccess.Models;
+using TexxtyDataAccess.Models.Utilities;
+using TexxtyDataAccess.Repository.Classes;
 
 namespace Texxty_api.Controllers
 {
+    [RoutePrefix("api/Accounts")]
     public class AccountsController : ApiController
     {
-        [BasicAuthentication]
-        // TEST METHOD 
-        public IHttpActionResult GetUserInfo()
-        {
-            string username = Thread.CurrentPrincipal.Identity.Name;
+        private readonly UserRepository repo = new UserRepository();
 
-            if (username != null)
-                return Ok(username + "-> GetUserInfo");
-            else
-                return Ok("ERROR");
+        [HttpGet]
+        [BearerAuthentication]
+        public HttpResponseMessage Get(int id)
+        {
+            try
+            {
+                var user = repo.GetUserModel(id);
+
+                if (user == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, user);
+            }
+            catch
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    "Could not find the specified user.");
+            }
         }
 
         [HttpPost]
-        public IHttpActionResult Login()
+        [Route("Register")]
+        public HttpResponseMessage Register([FromBody]User user)
         {
-            if (Request.Headers.Authorization == null)
-                return StatusCode(HttpStatusCode.Unauthorized);
-
-            // Get authenticationToken from the Request Header
-            string authenticationToken = Request.Headers.Authorization.Parameter;
-
-            if (AuthenticationUtility.AuthenticateUser(authenticationToken))
+            try
             {
-                return Ok("Login Successful");
+                user.ActiveStatus = true;
+                user.Token = AuthenticationUtility.GenerateToken();
+
+                repo.Insert(user);
+
+                // Return the URI for the new user along with the token
+                var resp = Request.CreateResponse(HttpStatusCode.Created, new { user.Token });
+                resp.Headers.Location = new Uri(new Uri(Request.RequestUri, ".") + user.UserID.ToString());
+                return resp;
+            }
+            catch
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    "Failed to create new user account.");
+            }
+        }
+
+        public struct LoginInfo
+        {
+            public string Username { get; set; }
+            public string Password { get; set; }
+        }
+
+        [HttpPost]
+        public HttpResponseMessage Login([FromBody]LoginInfo login)
+        {
+            var token = AuthenticationUtility.AuthenticateUser(login.Username, login.Password);
+            if (token != null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new { token });
             }
             else
             {
-                return StatusCode(HttpStatusCode.Unauthorized);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
         }
     }
