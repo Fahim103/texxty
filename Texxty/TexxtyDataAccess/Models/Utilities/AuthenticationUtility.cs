@@ -15,14 +15,12 @@ namespace TexxtyDataAccess.Models.Utilities
         /// <returns></returns>
         public static bool AuthenticateUser(string authenticationToken)
         {
-            return true;
-            //(string username, string password) = GetCredentials(authenticationToken);
-            //using (TexxtyDBEntities entities =  new TexxtyDBEntities())
-            //{
-            //    return entities.Users.Any(user => user.Username == username && user.Password == password);
-            //}
+            (string username, string password) = GetCredentials(authenticationToken);
+            using (TexxtyDBEntities entities = new TexxtyDBEntities())
+            {
+                return entities.Users.Any(user => user.Username == username && user.Password == password);
+            }
         }
-
 
         /// <summary>
         /// Checks if user crentials supplied is correct or not, and also returns username back from decoded string
@@ -32,14 +30,12 @@ namespace TexxtyDataAccess.Models.Utilities
         /// <returns></returns>
         public static bool AuthenticateUser(string authenticationToken, out string usernameOut)
         {
-            usernameOut = "";
-            return true;
-            //(string username, string password) = GetCredentials(authenticationToken);
-            //using (TexxtyDBEntities entities = new TexxtyDBEntities())
-            //{
-            //    usernameOut = username;
-            //    return entities.Users.Any(user => user.Username == username && user.Password == password);
-            //}
+            (string username, string password) = GetCredentials(authenticationToken);
+            using (TexxtyDBEntities entities = new TexxtyDBEntities())
+            {
+                usernameOut = username;
+                return entities.Users.Any(user => user.Username == username && user.Password == password);
+            }
         }
 
         /// <summary>
@@ -47,14 +43,14 @@ namespace TexxtyDataAccess.Models.Utilities
         /// </summary>
         /// <param name="authenticationToken">( Username:Password ) in Base64 format encoded</param>
         /// <returns>Tuple which contains the decoded username and password</returns>
-        //public static (string username, string password) GetCredentials(string authenticationToken)
-        //{
-        //    string decodedAuthenticationToken = Encoding.UTF8.GetString(Convert.FromBase64String(authenticationToken));
-        //    string[] usernamePasswordArray = decodedAuthenticationToken.Split(':');
-        //    string username = usernamePasswordArray[0];
-        //    string password = usernamePasswordArray[1];
+        public static (string username, string password) GetCredentials(string authenticationToken)
+        {
+            string decodedAuthenticationToken = Encoding.UTF8.GetString(Convert.FromBase64String(authenticationToken));
+            string[] usernamePasswordArray = decodedAuthenticationToken.Split(':');
+            string username = usernamePasswordArray[0];
+            string password = usernamePasswordArray[1];
 
-        //    return (username, password);
-        //}
+            return (username, password);
+        }
     }
 }
