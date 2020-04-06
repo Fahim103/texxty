@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8ba00d017da2417bbf1b3132900aa5c5" Name="Diagram1">
+        <EntityTypeShape EntityType="TexxtyModel.Blog" Width="1.5" PointX="1.125" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TexxtyModel.BlogFollow" Width="1.5" PointX="5.875" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="TexxtyModel.BlogTopic" Width="1.5" PointX="8.625" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TexxtyModel.Post" Width="1.5" PointX="3.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TexxtyModel.TopicFollow" Width="1.5" PointX="3.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TexxtyModel.User" Width="1.5" PointX="1.125" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="TexxtyModel.FK_Blog_Topic" ManuallyRouted="false" />
+        <AssociationConnector Association="TexxtyModel.FK_Blog_User" ManuallyRouted="false" />
+        <AssociationConnector Association="TexxtyModel.FK_BlogFollow_Blog" ManuallyRouted="false" />
+        <AssociationConnector Association="TexxtyModel.FK_Post_Blog" ManuallyRouted="false" />
+        <AssociationConnector Association="TexxtyModel.FK_BlogFollow_User" ManuallyRouted="false" />
+        <AssociationConnector Association="TexxtyModel.FK_TopicFollow_BlogTopic" ManuallyRouted="false" />
+        <AssociationConnector Association="TexxtyModel.FK_TopicFollow_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
