@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading;
 using System.Web.Http;
 using Texxty_api.Attributes;
-using Texxty_api.Models;
-using Texxty_api.Models.Utilities;
-using Texxty_api.Repository.Classes;
+using TexxtyDataAccess.Models;
+using TexxtyDataAccess.Models.Utilities;
+using TexxtyDataAccess.Repository.Classes;
 
 namespace Texxty_api.Controllers
 {

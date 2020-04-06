@@ -9,7 +9,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
-using Texxty_api.Models.Utilities;
+using TexxtyDataAccess.Models.Utilities;
 
 namespace Texxty_api.Attributes
 {

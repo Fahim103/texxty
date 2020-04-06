@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Texxty_api.Models.Utilities;
+using TexxtyDataAccess.Models.Utilities;
 
 namespace Texxty_api.Controllers
 {
