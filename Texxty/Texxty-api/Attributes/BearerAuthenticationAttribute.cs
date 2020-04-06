@@ -13,11 +13,11 @@ using TexxtyDataAccess.Models.Utilities;
 
 namespace Texxty_api.Attributes
 {
-    public class BasicAuthenticationAttribute : AuthorizationFilterAttribute
+    public class BearerAuthenticationAttribute : AuthorizationFilterAttribute
     {
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            base.OnAuthorization(actionContext);
+            //base.OnAuthorization(actionContext);
             if (actionContext.Request.Headers.Authorization == null)
             {
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
@@ -25,10 +25,10 @@ namespace Texxty_api.Attributes
             else
             {
                 string authenticationToken = actionContext.Request.Headers.Authorization.Parameter;
-                string username;
-                if(AuthenticationUtility.AuthenticateUser(authenticationToken, out username))
+                var user = AuthenticationUtility.VerifyToken(authenticationToken);
+                if (user != null)
                 {
-                    Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(username), null);
+                    Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(user.Username), new string[] { user.Role });
                 }
                 else
                 {

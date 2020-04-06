@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TexxtyDataAccess.Models;
+using TexxtyDataAccess.Models.CustomModels;
 
 namespace TexxtyDataAccess.Repository
 {
@@ -11,5 +12,6 @@ namespace TexxtyDataAccess.Repository
     {
         bool CheckUsernameAvailable(User user);
         bool CheckEmailAvailable(User user);
+        UserModel GetUserModel(int id);
     }
 }

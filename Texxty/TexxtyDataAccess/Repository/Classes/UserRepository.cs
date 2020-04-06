@@ -26,7 +26,6 @@ namespace TexxtyDataAccess.Repository.Classes
                 Email = entity.Email,
                 FullName = entity.FullName,
                 ActiveStatus = entity.ActiveStatus,
-                Token = entity.Token,
             };
         }
 

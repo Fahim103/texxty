@@ -22,45 +22,31 @@ namespace TexxtyDataAccess.Models.Utilities
         /// Checks if user crentials supplied is correct or not
         /// </summary>
         /// <param name="authenticationToken">( Username:Password ) in Base64 format encoded</param>
-        /// <returns></returns>
-        public static bool AuthenticateUser(string authenticationToken)
+        /// <returns>Token for the authenticated user, otherwise null</returns>
+        public static string AuthenticateUser(string username, string password)
         {
-            (string username, string password) = GetCredentials(authenticationToken);
             using (TexxtyDBEntities entities = new TexxtyDBEntities())
             {
-                return entities.Users.Any(user => user.Username == username && user.Password == password);
+                var entity = entities.Users.FirstOrDefault(user => user.Username == username && user.Password == password);
+                if (entity != null)
+                    return entity.Token;
+                else
+                    return null;
             }
         }
 
         /// <summary>
         /// Checks if user crentials supplied is correct or not, and also returns username back from decoded string
         /// </summary>
-        /// <param name="authenticationToken">( Username:Password ) in Base64 format encoded</param>
+        /// <param name="token">( Username:Password ) in Base64 format encoded</param>
         /// <param name="usernameOut">Username of the user which was supplied in Encoded Token</param>
         /// <returns></returns>
-        public static bool AuthenticateUser(string authenticationToken, out string usernameOut)
+        public static User VerifyToken(string token)
         {
-            (string username, string password) = GetCredentials(authenticationToken);
             using (TexxtyDBEntities entities = new TexxtyDBEntities())
             {
-                usernameOut = username;
-                return entities.Users.Any(user => user.Username == username && user.Password == password);
+                return entities.Users.FirstOrDefault(user => user.Token == token);
             }
-        }
-
-        /// <summary>
-        /// Decodes username and password from Authentication Token (which should be in Base64 format)
-        /// </summary>
-        /// <param name="authenticationToken">( Username:Password ) in Base64 format encoded</param>
-        /// <returns>Tuple which contains the decoded username and password</returns>
-        public static (string username, string password) GetCredentials(string authenticationToken)
-        {
-            string decodedAuthenticationToken = Encoding.UTF8.GetString(Convert.FromBase64String(authenticationToken));
-            string[] usernamePasswordArray = decodedAuthenticationToken.Split(':');
-            string username = usernamePasswordArray[0];
-            string password = usernamePasswordArray[1];
-
-            return (username, password);
         }
     }
 }

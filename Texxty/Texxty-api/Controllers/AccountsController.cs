@@ -13,22 +13,13 @@ using TexxtyDataAccess.Repository.Classes;
 
 namespace Texxty_api.Controllers
 {
+    [RoutePrefix("api/Accounts")]
     public class AccountsController : ApiController
     {
         private readonly UserRepository repo = new UserRepository();
 
-        [BasicAuthentication]
-        // TEST METHOD 
-        public IHttpActionResult GetUserInfo()
-        {
-            string username = Thread.CurrentPrincipal.Identity.Name;
-
-            if (username != null)
-                return Ok(username + "-> GetUserInfo");
-            else
-                return Ok("ERROR");
-        }
-
+        [HttpGet]
+        [BearerAuthentication]
         public HttpResponseMessage Get(int id)
         {
             try
@@ -50,7 +41,7 @@ namespace Texxty_api.Controllers
         }
 
         [HttpPost]
-        [Route("api/Accounts/Register")]
+        [Route("Register")]
         public HttpResponseMessage Register([FromBody]User user)
         {
             try
@@ -72,22 +63,23 @@ namespace Texxty_api.Controllers
             }
         }
 
-        [HttpPost]
-        public IHttpActionResult Login()
+        public struct LoginInfo
         {
-            if (Request.Headers.Authorization == null)
-                return StatusCode(HttpStatusCode.Unauthorized);
+            public string Username { get; set; }
+            public string Password { get; set; }
+        }
 
-            // Get authenticationToken from the Request Header
-            string authenticationToken = Request.Headers.Authorization.Parameter;
-
-            if (AuthenticationUtility.AuthenticateUser(authenticationToken))
+        [HttpPost]
+        public HttpResponseMessage Login([FromBody]LoginInfo login)
+        {
+            var token = AuthenticationUtility.AuthenticateUser(login.Username, login.Password);
+            if (token != null)
             {
-                return Ok("Login Successful");
+                return Request.CreateResponse(HttpStatusCode.OK, new { token });
             }
             else
             {
-                return StatusCode(HttpStatusCode.Unauthorized);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
         }
     }
