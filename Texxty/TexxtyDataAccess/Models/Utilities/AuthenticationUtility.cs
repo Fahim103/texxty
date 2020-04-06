@@ -8,6 +8,16 @@ namespace TexxtyDataAccess.Models.Utilities
 {
     public class AuthenticationUtility
     {
+        public static string GenerateToken()
+        {
+            // http://www.programmerguide.net/2015/02/generating-unique-token-in-c-generating.html
+            byte[] time = BitConverter.GetBytes(DateTime.UtcNow.ToBinary());
+            byte[] key = Guid.NewGuid().ToByteArray();
+            string token = Convert.ToBase64String(time.Concat(key).ToArray());
+
+            return token;
+        }
+
         /// <summary>
         /// Checks if user crentials supplied is correct or not
         /// </summary>

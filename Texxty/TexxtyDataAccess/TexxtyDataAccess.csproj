@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="Models\CustomModels\BlogModel.cs" />
     <Compile Include="Models\CustomModels\PostModel.cs" />
+    <Compile Include="Models\CustomModels\UserModel.cs" />
     <Compile Include="Models\Post.cs">
       <DependentUpon>TexxtyDBModel.tt</DependentUpon>
     </Compile>

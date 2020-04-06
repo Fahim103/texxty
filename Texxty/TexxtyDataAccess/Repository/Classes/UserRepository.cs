@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using TexxtyDataAccess.Models;
+using TexxtyDataAccess.Models.CustomModels;
 
 namespace TexxtyDataAccess.Repository.Classes
 {
@@ -13,6 +14,20 @@ namespace TexxtyDataAccess.Repository.Classes
         public UserRepository()
         {
             this.context = new TexxtyDBEntities();
+        }
+
+        public UserModel GetUserModel(int id)
+        {
+            var entity = Get(id);
+            return new UserModel
+            {
+                UserID = entity.UserID,
+                Username = entity.Username,
+                Email = entity.Email,
+                FullName = entity.FullName,
+                ActiveStatus = entity.ActiveStatus,
+                Token = entity.Token,
+            };
         }
 
         public bool CheckUsernameAvailable(User user) =>

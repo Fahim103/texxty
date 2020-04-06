@@ -28,30 +28,13 @@ namespace TexxtyDataAccess.Repository.Classes
 
         public void Insert(TEntity entity)
         {
-
-            try
-            {
-                context.Set<TEntity>().Add(entity);
-                context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                var msg = e.InnerException;
-            }
+            context.Set<TEntity>().Add(entity);
+            context.SaveChanges();
         }
         public void Update(TEntity entity)
         {
-            try
-            {
-
-                context.Entry(entity).State = EntityState.Modified;
-                context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                var msg = e.InnerException;
-            }
-
+            context.Entry(entity).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void Delete(int id)
