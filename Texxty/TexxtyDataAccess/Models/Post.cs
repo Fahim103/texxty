@@ -14,6 +14,11 @@ namespace TexxtyDataAccess.Models
     
     public partial class Post
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Post()
+        {
+            this.Blogs = new HashSet<Blog>();
+            }
         public int PostID { get; set; }
         public string Title { get; set; }
         public System.DateTime PublishedDate { get; set; }
@@ -25,5 +30,8 @@ namespace TexxtyDataAccess.Models
         public int ViewCount { get; set; }
     
         public virtual Blog Blog { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Blog> Blogs { get; set; }
+
     }
 }
