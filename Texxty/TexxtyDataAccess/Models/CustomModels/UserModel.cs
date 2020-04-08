@@ -13,6 +13,6 @@ namespace TexxtyDataAccess.Models.CustomModels
         public string Email { get; set; }
         public string FullName { get; set; }
         public bool ActiveStatus { get; set; }
-        public bool Role { get; set; }
+        public string Role { get; set; }
     }
 }
