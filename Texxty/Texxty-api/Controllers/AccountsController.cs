@@ -62,23 +62,31 @@ namespace Texxty_api.Controllers
             }
         }
 
+        public struct PasswordChangeInfo
+        {
+            public string CurrentPassword { get; set; }
+            public string NewPassword { get; set; }
+            public string NewPasswordConfirm { get; set; }
+
+        }
+
         [HttpPut]
         [Route("{user_id}/UpdatePassword")]
-        public IHttpActionResult UpdatePassword(int user_id,[FromBody]string currentPassword, [FromBody]string newPassword, [FromBody]string newPasswordConfirm)
+        public IHttpActionResult UpdatePassword(int user_id,[FromBody]PasswordChangeInfo passwordChangeInfo)
         {
             var dbUser = userRepository.Get(user_id);
             if(dbUser == null)
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound, "User not found"));
 
-            if(!dbUser.Password.Equals(currentPassword))
+            if(!dbUser.Password.Equals(passwordChangeInfo.CurrentPassword))
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Incorrect password"));
 
-            if(string.IsNullOrWhiteSpace(newPassword) || string.IsNullOrWhiteSpace(newPasswordConfirm) || !newPassword.Equals(newPasswordConfirm))
+            if(string.IsNullOrWhiteSpace(passwordChangeInfo.NewPassword) || string.IsNullOrWhiteSpace(passwordChangeInfo.NewPasswordConfirm) || !passwordChangeInfo.NewPassword.Equals(passwordChangeInfo.NewPasswordConfirm))
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "New Password Empty or Doesn't match"));
 
             try
             {
-                dbUser.Password = newPassword;
+                dbUser.Password = passwordChangeInfo.NewPassword;
                 userRepository.Update(dbUser);
                 return Ok(userRepository.GetUserModel(dbUser.UserID));
             }
