@@ -36,9 +36,29 @@ namespace Texxty_api.Controllers
             try
             {
                 user.ActiveStatus = true;
-                user.Role = "user"; // All users registering through user endpoints have role user
-                user.Token = AuthenticationUtility.GenerateToken();
+                if (Request.Headers.Authorization.Parameter != null) 
+                {
+                    string authenticationToken = Request.Headers.Authorization.Parameter;
+                    var loggedInUser = AuthenticationUtility.VerifyToken(authenticationToken);
+                    
+                    if(loggedInUser != null)
+                    {
+                        if (loggedInUser.Role.Equals("admin"))
+                        {
+                            user.Role = "admin";
+                        }
+                        else
+                        {
+                            user.Role = "user";
+                        }
+                    }
+                    else
+                    {
+                        user.Role = "user";
+                    }
+                }
 
+                user.Token = AuthenticationUtility.GenerateToken();
                 userRepository.Insert(user);
 
                 // Return the URI for the new user along with the token
