@@ -16,51 +16,10 @@ namespace Texxty_api.Controllers
     [RoutePrefix("api/Accounts")]
     public class AccountsController : ApiController
     {
-        private readonly UserRepository repo = new UserRepository();
-
-        [HttpGet]
-        [BearerAuthentication]
-        public HttpResponseMessage Get(int id)
+        protected UserRepository userRepository;
+        public AccountsController()
         {
-            try
-            {
-                var user = repo.GetUserModel(id);
-
-                if (user == null)
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
-                }
-
-                return Request.CreateResponse(HttpStatusCode.OK, user);
-            }
-            catch
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Could not find the specified user.");
-            }
-        }
-
-        [HttpPost]
-        [Route("Register")]
-        public HttpResponseMessage Register([FromBody]User user)
-        {
-            try
-            {
-                user.ActiveStatus = true;
-                user.Token = AuthenticationUtility.GenerateToken();
-
-                repo.Insert(user);
-
-                // Return the URI for the new user along with the token
-                var resp = Request.CreateResponse(HttpStatusCode.Created, new { user.Token });
-                resp.Headers.Location = new Uri(new Uri(Request.RequestUri, ".") + user.UserID.ToString());
-                return resp;
-            }
-            catch
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Failed to create new user account.");
-            }
+            userRepository = new UserRepository();
         }
 
         public struct LoginInfo
@@ -69,17 +28,63 @@ namespace Texxty_api.Controllers
             public string Password { get; set; }
         }
 
-        [HttpPost]
-        public HttpResponseMessage Login([FromBody]LoginInfo login)
+        [HttpPut]
+        [Route("{user_id}/UpdateInformation")]
+        public IHttpActionResult UpdateInformation(int user_id,User user)
         {
-            var token = AuthenticationUtility.AuthenticateUser(login.Username, login.Password);
-            if (token != null)
+            if (string.IsNullOrWhiteSpace(user.FullName))
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Fullname cannot be Empty"));
+
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new { token });
+                var dbUser = userRepository.Get(user_id);
+                if (dbUser == null)
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound, "User not found"));
+
+                if (user.Email != null && !dbUser.Email.Equals(user.Email))
+                {
+                    if (string.IsNullOrWhiteSpace(user.Email))
+                        return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Email cannot be Empty"));
+
+                    if (!userRepository.CheckEmailAvailable(user))
+                        return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Account with email exists"));
+
+                    dbUser.Email = user.Email;
+                }
+
+                dbUser.FullName = user.FullName;
+                userRepository.Update(dbUser);
+                return Ok(userRepository.GetUserModel(dbUser.UserID));
             }
-            else
+            catch
             {
-                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPut]
+        [Route("{user_id}/UpdatePassword")]
+        public IHttpActionResult UpdatePassword(int user_id,[FromBody]string currentPassword, [FromBody]string newPassword, [FromBody]string newPasswordConfirm)
+        {
+            var dbUser = userRepository.Get(user_id);
+            if(dbUser == null)
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound, "User not found"));
+
+            if(!dbUser.Password.Equals(currentPassword))
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Incorrect password"));
+
+            if(string.IsNullOrWhiteSpace(newPassword) || string.IsNullOrWhiteSpace(newPasswordConfirm) || !newPassword.Equals(newPasswordConfirm))
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "New Password Empty or Doesn't match"));
+
+            try
+            {
+                dbUser.Password = newPassword;
+                userRepository.Update(dbUser);
+                return Ok(userRepository.GetUserModel(dbUser.UserID));
+            }
+            catch
+            {
+                return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
     }
