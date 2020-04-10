@@ -33,15 +33,33 @@ namespace Texxty_api.Controllers
         [Route("Register")]
         public HttpResponseMessage Register([FromBody]User user)
         {
+            if (!ModelState.IsValid)
+            {
+                string errorMessages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessages);
+            }
+            else
+            {
+                bool userNameAvailable = userRepository.CheckUsernameAvailable(user);
+                bool emailAvailable = userRepository.CheckEmailAvailable(user);
+
+                if (!userNameAvailable && !emailAvailable)
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Username not available. Account with Email already exists");
+                else if (!userNameAvailable)
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Username not available.");
+                else if (!emailAvailable)
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Account with Email already exists");
+            }
+
             try
             {
                 user.ActiveStatus = true;
-                if (Request.Headers.Authorization.Parameter != null) 
+                if (Request.Headers.Authorization != null)
                 {
                     string authenticationToken = Request.Headers.Authorization.Parameter;
                     var loggedInUser = AuthenticationUtility.VerifyToken(authenticationToken);
-                    
-                    if(loggedInUser != null)
+
+                    if (loggedInUser != null)
                     {
                         if (loggedInUser.Role.Equals("admin"))
                         {
@@ -56,6 +74,10 @@ namespace Texxty_api.Controllers
                     {
                         user.Role = "user";
                     }
+                }
+                else
+                {
+                    user.Role = "user";
                 }
 
                 user.Token = AuthenticationUtility.GenerateToken();
