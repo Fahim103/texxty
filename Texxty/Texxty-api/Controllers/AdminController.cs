@@ -24,13 +24,20 @@ namespace Texxty_api.Controllers
         public IHttpActionResult Login([FromBody]LoginInfo login)
         {
             var token = AuthenticationUtility.AuthenticateUser(login.Username, login.Password, out string role);
-            if (token != null && role.Equals("admin"))
+            if (token != null)
             {
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { token }));
+                if (role.Equals("admin"))
+                {
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { token }));
+                }
+                else
+                {
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.Forbidden));
+                }
             }
             else
             {
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Forbidden));
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Unauthorized));
             }
         }
 
