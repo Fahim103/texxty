@@ -12,20 +12,22 @@ using TexxtyDataAccess.Repository.Classes;
 
 namespace Texxty_api.Controllers
 {
-    [RoutePrefix("api/Posts")]
+    [RoutePrefix("api/Blogs/{blog_id}/Posts")]
 
     public class PostsController : ApiController
     {
         private readonly PostRepository postrepo = new PostRepository();
         private readonly SlugHelper helper = new SlugHelper();
 
+        
+        [Route("")]
         [HttpGet]
         [BearerAuthentication]
-        public HttpResponseMessage Get(int id)
+        public HttpResponseMessage Get(int blog_id)
         {
             try
             {
-                var posts = postrepo.GetPostModelList(id);
+                var posts = postrepo.GetPostModelList(blog_id);
                 if (posts.Count == 0)
                 {
                     return Request.CreateResponse(HttpStatusCode.NotFound);
@@ -42,17 +44,18 @@ namespace Texxty_api.Controllers
 
 
         }
-        [Route("{id}")]
+        [Route("")]
         [HttpPost]
         [BearerAuthentication]
-        public HttpResponseMessage Post([FromUri] int id, [FromBody]Post post)
+        public HttpResponseMessage Post([FromUri] int blog_id, [FromBody]Post post)
         {
             try
             {
-                post.BlogID = id;
-                post.ViewCount = 0;
-                    post.UrlField = helper.GenerateSlug(post.Title.ToString());
-                    postrepo.Insert(post);
+                  post.BlogID = blog_id;
+                  post.ModifiedDate = post.PublishedDate;
+                  post.ViewCount = 0;
+                  post.UrlField = helper.GenerateSlug(post.Title.ToString());
+                  postrepo.Insert(post);
                 
 
                 var resp = Request.CreateResponse(HttpStatusCode.Created);
@@ -65,15 +68,15 @@ namespace Texxty_api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to create new post."+e);
             }
         }
-        [Route("Edit/{id}")]
+        [Route("{post_id}")]
         [HttpPut]
         [BearerAuthentication]
-        public HttpResponseMessage Put([FromBody]Post post, [FromUri]int id)
+        public HttpResponseMessage Put([FromBody]Post post, [FromUri]int post_id)
         { try
             {
 
-                post.PostID = id;
-                Post entity = postrepo.Get(id);
+                post.PostID = post_id;
+                Post entity = postrepo.Get(post_id);
                 entity.PostContent = post.PostContent;
                 entity.ModifiedDate = DateTime.Now;
                 entity.Title = post.Title;
@@ -91,30 +94,30 @@ namespace Texxty_api.Controllers
             }
 
         }
-        [Route("Delete/{id}")]
+        [Route("{post_id}")]
         [BearerAuthentication]
-        public HttpResponseMessage Delete(int id)
+        public HttpResponseMessage Delete(int post_id)
         {
             try
             {
-                postrepo.Delete(id);
+                postrepo.Delete(post_id);
                 return Request.CreateResponse(HttpStatusCode.NoContent);
             }
             catch
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to edit post.");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to delete post.");
 
             }
 
         }
-        [Route("Details/{id}")]
+        [Route("{post_id}")]
         [BearerAuthentication]
         [HttpGet]
-        public HttpResponseMessage GetDetails(int id)
+        public HttpResponseMessage Get(int blog_id, int post_id)
         {
             try
             {
-                var post = postrepo.GetPostModel(id);
+                var post = postrepo.GetPostModel(post_id);
 
                 if (post == null)
                 {
