@@ -68,6 +68,8 @@
     <Compile Include="Models\CustomModels\BlogModel.cs" />
     <Compile Include="Models\CustomModels\PostModel.cs" />
     <Compile Include="Models\CustomModels\UserModel.cs" />
+    <Compile Include="Models\EntityClasses\User.cs" />
+    <Compile Include="Models\IUserMetaData.cs" />
     <Compile Include="Models\Post.cs">
       <DependentUpon>TexxtyDBModel.tt</DependentUpon>
     </Compile>
