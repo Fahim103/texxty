@@ -51,21 +51,29 @@ namespace Texxty_api.Controllers
         {
             try
             {
-                  post.BlogID = blog_id;
-                  post.ModifiedDate = post.PublishedDate;
-                  post.ViewCount = 0;
-                  post.UrlField = helper.GenerateSlug(post.Title.ToString());
-                  postrepo.Insert(post);
-                
+                if (!ModelState.IsValid)
+                {
+                    string errorMessages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessages);
+                }
+                else
+                {
+                    post.BlogID = blog_id;
+                    post.ModifiedDate = post.PublishedDate;
+                    post.ViewCount = 0;
+                    post.UrlField = helper.GenerateSlug(post.Title.ToString());
+                    postrepo.Insert(post);
 
-                var resp = Request.CreateResponse(HttpStatusCode.Created);
-                resp.Headers.Location = new Uri(new Uri(Request.RequestUri, ".") + post.PostID.ToString());
 
-                return resp;
+                    var resp = Request.CreateResponse(HttpStatusCode.Created);
+                    resp.Headers.Location = new Uri(new Uri(Request.RequestUri, ".") + post.PostID.ToString());
+
+                    return resp;
+                }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to create new post."+e);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to create new post." + e);
             }
         }
         [Route("{post_id}")]
@@ -74,20 +82,26 @@ namespace Texxty_api.Controllers
         public HttpResponseMessage Put([FromBody]Post post, [FromUri]int post_id)
         { try
             {
-
-                post.PostID = post_id;
-                Post entity = postrepo.Get(post_id);
-                entity.PostContent = post.PostContent;
-                entity.ModifiedDate = DateTime.Now;
-                entity.Title = post.Title;
-                entity.ViewCount = post.ViewCount;
-                entity.Draft = post.Draft;
-                entity.UrlField = helper.GenerateSlug(post.Title.ToString());
-                postrepo.Update(entity);
-                return Request.CreateResponse(HttpStatusCode.OK);
+                if (!ModelState.IsValid)
+                {
+                    string errorMessages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessages);
+                }
+                else
+                {
+                    post.PostID = post_id;
+                    Post entity = postrepo.Get(post_id);
+                    entity.PostContent = post.PostContent;
+                    entity.ModifiedDate = DateTime.Now;
+                    entity.Title = post.Title;
+                    entity.ViewCount = post.ViewCount;
+                    entity.Draft = post.Draft;
+                    entity.UrlField = helper.GenerateSlug(post.Title.ToString());
+                    postrepo.Update(entity);
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
             }
-
-            catch 
+            catch
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to edit post.");
 

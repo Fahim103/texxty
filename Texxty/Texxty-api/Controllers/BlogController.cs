@@ -73,16 +73,24 @@ namespace Texxty_api.Controllers
         {
             try
             {
-                blog.ViewCount = 0; 
-                
-                blog.UrlField = helper.GenerateSlug(blog.Title.ToString());
-                blogrepo.Insert(blog);
+                if (!ModelState.IsValid)
+                {
+                    string errorMessages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessages);
+                }
+                else
+                {
+                    blog.ViewCount = 0;
+
+                    blog.UrlField = helper.GenerateSlug(blog.Title.ToString());
+                    blogrepo.Insert(blog);
 
 
-                var resp = Request.CreateResponse(HttpStatusCode.Created);
-                resp.Headers.Location = new Uri(new Uri(Request.RequestUri, ".") + blog.BlogID.ToString());
+                    var resp = Request.CreateResponse(HttpStatusCode.Created);
+                    resp.Headers.Location = new Uri(new Uri(Request.RequestUri, ".") + blog.BlogID.ToString());
 
-                return resp;
+                    return resp;
+                }
             }
             catch (Exception e)
             {
@@ -96,14 +104,21 @@ namespace Texxty_api.Controllers
         {
             try
             {
-
-                Blog entity = blogrepo.Get(blog_id);
-                entity.Title = blog.Title;
-                entity.Description = blog.Description;
-                entity.Private = blog.Private;
-                entity.UrlField = helper.GenerateSlug(blog.Title.ToString());
-                blogrepo.Update(entity);
-                return Request.CreateResponse(HttpStatusCode.OK);
+                if (!ModelState.IsValid)
+                {
+                    string errorMessages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessages);
+                }
+                else
+                {
+                    Blog entity = blogrepo.Get(blog_id);
+                    entity.Title = blog.Title;
+                    entity.Description = blog.Description;
+                    entity.Private = blog.Private;
+                    entity.UrlField = helper.GenerateSlug(blog.Title.ToString());
+                    blogrepo.Update(entity);
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
             }
 
             catch
