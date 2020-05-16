@@ -66,6 +66,7 @@
       <DependentUpon>TexxtyDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CustomModels\BlogModel.cs" />
+    <Compile Include="Models\CustomModels\BlogTopicsModel.cs" />
     <Compile Include="Models\CustomModels\PostModel.cs" />
     <Compile Include="Models\CustomModels\UserModel.cs" />
     <Compile Include="Models\EntityClasses\User.cs" />

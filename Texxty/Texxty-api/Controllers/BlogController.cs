@@ -11,14 +11,56 @@ using TexxtyDataAccess.Repository.Classes;
 
 namespace Texxty_api.Controllers
 {
-   [RoutePrefix("api/Blogs")]
+   [RoutePrefix("api")]
 
     public class BlogController : ApiController
     {
         private readonly BlogRepository  blogrepo = new BlogRepository();
         private readonly SlugHelper helper = new SlugHelper();
 
-        [Route("")]
+        [Route("Users/{user_id}/Blogs")]
+        [BearerAuthentication]
+        [HttpGet]
+        public IHttpActionResult GetAllBlogsByUserID(int user_id)
+        {
+            try
+            {
+                var blogs = blogrepo.GetBlogModelList(user_id);
+                if (blogs.Count == 0)
+                {
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound, "No Blogs Exists Yet"));
+
+                }
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, blogs));
+            }
+            catch(Exception e)
+            {
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong"));
+            }
+        }
+
+        [Route("Users/{user_id}/Blogs/{blog_id}")]
+        [BearerAuthentication]
+        [HttpGet]
+        public IHttpActionResult GetBlog(int user_id, int blog_id)
+        {
+            try
+            {
+                var blog = blogrepo.GetBlogModel(user_id, blog_id);
+                if (blog == null)
+                {
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound));
+                }
+
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, blog));
+            }
+            catch (Exception e)
+            {
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong"));
+            }
+        }
+
+        [Route("Blogs")]
         [BearerAuthentication]
         [HttpGet]
         public HttpResponseMessage Get()
@@ -32,7 +74,7 @@ namespace Texxty_api.Controllers
                     return Request.CreateResponse(HttpStatusCode.NotFound, "Blogs not found");
 
                 }
-               return Request.CreateResponse(HttpStatusCode.OK, blogs);
+                return Request.CreateResponse(HttpStatusCode.OK, blogs);
 
             }
             catch (Exception e)
@@ -41,7 +83,8 @@ namespace Texxty_api.Controllers
                ""+e);
             }
         }
-        [Route("{blog_id}")]
+
+        [Route("Blogs/{blog_id}")]
         [BearerAuthentication]
         [HttpGet]
         public HttpResponseMessage Get(int blog_id)
@@ -65,10 +108,10 @@ namespace Texxty_api.Controllers
 
 
         }
-        [Route("")]
+
+        [Route("Blogs")]
         [HttpPost]
         [BearerAuthentication]
-
         public HttpResponseMessage Post([FromBody]Blog blog)
         {
             try
@@ -89,7 +132,7 @@ namespace Texxty_api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to create new blog." + e);
             }
         }
-        [Route("{blog_id}")]
+        [Route("Blogs/{blog_id}")]
         [HttpPut]
         [BearerAuthentication]
         public HttpResponseMessage Put([FromBody]Blog blog, [FromUri]int blog_id)
@@ -101,6 +144,7 @@ namespace Texxty_api.Controllers
                 entity.Title = blog.Title;
                 entity.Description = blog.Description;
                 entity.Private = blog.Private;
+                entity.TopicID = blog.TopicID;
                 entity.UrlField = helper.GenerateSlug(blog.Title.ToString());
                 blogrepo.Update(entity);
                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -113,7 +157,7 @@ namespace Texxty_api.Controllers
             }
         }
 
-        [Route("{blog_id}")]
+        [Route("Blogs/{blog_id}")]
         [BearerAuthentication]
         public HttpResponseMessage Delete(int blog_id)
         {
@@ -132,12 +176,5 @@ namespace Texxty_api.Controllers
             }
 
         }
-
-
-
-
-
-
-
     }
-    }
+}

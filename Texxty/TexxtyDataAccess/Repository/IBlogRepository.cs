@@ -12,7 +12,7 @@ namespace TexxtyDataAccess.Repository
     {
         void CountViews(int blogid);
         bool CheckBlogPrivate(int id);
-        List<Blog> GetAllBlogsByID(int id);
+        List<Blog> GetAllBlogsByUserID(int user_id);
         List<BlogModel> GetBlogModelList();
         BlogModel GetBlogModel(int id);
     }

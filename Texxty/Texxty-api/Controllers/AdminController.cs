@@ -23,12 +23,12 @@ namespace Texxty_api.Controllers
         [Route("Admin/Login")]
         public IHttpActionResult Login([FromBody]LoginInfo login)
         {
-            var token = AuthenticationUtility.AuthenticateUser(login.Username, login.Password, out string role);
+            var token = AuthenticationUtility.AuthenticateUser(login.Username, login.Password, out string role, out int userID);
             if (token != null)
             {
                 if (role.Equals("admin"))
                 {
-                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { token }));
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { token, userID }));
                 }
                 else
                 {
