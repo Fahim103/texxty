@@ -186,6 +186,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\FollowTopicController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
