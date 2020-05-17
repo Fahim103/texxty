@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using Texxty_api.Attributes;
 using TexxtyDataAccess.Repository.Classes;
@@ -85,10 +86,18 @@ namespace Texxty_api.Controllers
         {
             try
             {
-                 ftrepo.AddTopics(user_id, topicList);
-                var resp = Request.CreateResponse(HttpStatusCode.Created);
-                //resp.Headers.Location = new Uri(new Uri(Request.RequestUri, ".") + entity.TopicFollowID.ToString());
-                return resp;
+                if (topicList.Count >= 1)
+                {
+
+                    ftrepo.AddTopics(user_id, topicList);
+                    var resp = Request.CreateResponse(HttpStatusCode.Created);
+                    //resp.Headers.Location = new Uri(new Uri(Request.RequestUri, ".") + entity.TopicFollowID.ToString());
+                    return resp;
+                }
+
+                else
+                { return Request.CreateResponse(HttpStatusCode.NoContent, "No topics added"); }
+
             }
             catch (Exception e)
             { return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to create new topics." + e); }
