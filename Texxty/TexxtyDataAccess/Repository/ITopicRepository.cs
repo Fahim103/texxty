@@ -11,5 +11,6 @@ namespace TexxtyDataAccess.Repository
     public interface ITopicRepository : IRepository<BlogTopic>
     {
         List<BlogTopicsModel> GetTopicsModelsList();
+        BlogTopicsModel GetTopicsModelByID(int topic_id);
     }
 }
