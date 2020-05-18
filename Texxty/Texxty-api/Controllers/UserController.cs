@@ -28,7 +28,6 @@ namespace Texxty_api.Controllers
             }
         }
 
-
         [HttpPost]
         [Route("Register")]
         public HttpResponseMessage Register([FromBody]User user)

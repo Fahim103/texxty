@@ -68,6 +68,7 @@
     <Compile Include="Models\CustomModels\BlogModel.cs" />
     <Compile Include="Models\CustomModels\BlogTopicsModel.cs" />
     <Compile Include="Models\CustomModels\PostModel.cs" />
+    <Compile Include="Models\CustomModels\TopicFollowModel.cs" />
     <Compile Include="Models\CustomModels\UserModel.cs" />
     <Compile Include="Models\EntityClasses\Blog.cs" />
     <Compile Include="Models\EntityClasses\User.cs" />
