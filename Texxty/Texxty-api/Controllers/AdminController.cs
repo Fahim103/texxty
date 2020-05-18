@@ -41,28 +41,6 @@ namespace Texxty_api.Controllers
             }
         }
 
-        [HttpGet]
-        [BearerAuthentication]
-        [Route("Accounts/{user_id}/Details")]
-        public IHttpActionResult GetUserByID(int user_id)
-        {
-            if (!IsUserAdmin())
-                return StatusCode(HttpStatusCode.Forbidden);
-            try
-            {
-                var user = userRepository.GetUserModel(user_id);
-
-                if (user == null)
-                {
-                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound));
-                }
-
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, user));
-            }
-            catch
-            {
-                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.BadRequest,"Could not find the specified user."));
-            }
-        }
+        
     }
 }

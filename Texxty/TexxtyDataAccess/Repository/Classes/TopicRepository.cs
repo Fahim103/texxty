@@ -31,5 +31,17 @@ namespace TexxtyDataAccess.Repository.Classes
             }
             return blogTopicsModel;
         }
+
+        public BlogTopicsModel GetTopicsModelByID(int topic_id)
+        {
+            var entity = Get(topic_id);
+            var blogTopicsModel = new BlogTopicsModel()
+            {
+                    BlogTopicID = entity.BlogTopicID,
+                    Name = entity.Name
+            };
+            
+            return blogTopicsModel;
+        }
     }
 }
