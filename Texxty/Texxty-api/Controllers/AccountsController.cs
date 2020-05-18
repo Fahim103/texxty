@@ -28,6 +28,28 @@ namespace Texxty_api.Controllers
             public string Password { get; set; }
         }
 
+        [HttpGet]
+        [BearerAuthentication]
+        [Route("{user_id}/Details")]
+        public IHttpActionResult GetUserByID(int user_id)
+        {
+            try
+            {
+                var user = userRepository.GetUserModel(user_id);
+
+                if (user == null)
+                {
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound));
+                }
+
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, user));
+            }
+            catch
+            {
+                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Could not find the specified user."));
+            }
+        }
+
         [HttpPut]
         [Route("{user_id}/UpdateInformation")]
         public IHttpActionResult UpdateInformation(int user_id,User user)
