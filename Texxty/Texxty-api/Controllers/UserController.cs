@@ -17,10 +17,10 @@ namespace Texxty_api.Controllers
         [Route("Login")]
         public HttpResponseMessage Login([FromBody]LoginInfo login)
         {
-            var token = AuthenticationUtility.AuthenticateUser(login.Username, login.Password);
+            var token = AuthenticationUtility.AuthenticateUser(login.Username, login.Password, out int userID);
             if (token != null)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new { token });
+                return Request.CreateResponse(HttpStatusCode.OK, new { token, userID });
             }
             else
             {

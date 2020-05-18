@@ -21,11 +21,10 @@ namespace TexxtyDataAccess.Repository.Classes
             viewcount[0]++;
             var col = context.Blogs.Where(u => u.BlogID == blogid);
             foreach (var item in col)
-            { item.ViewCount = viewcount[0]; }
-            context.SaveChanges();
-
-
-
+            { 
+                item.ViewCount = viewcount[0]; 
+            }
+            context.SaveChanges(); // TODO : WHY IS THIS NEEDED  ?? 
         }
         public List<BlogModel> GetBlogModelList()
         {
@@ -43,11 +42,29 @@ namespace TexxtyDataAccess.Repository.Classes
                     UrlField = blog.UrlField,
                     UserID= blog.UserID,
                     ViewCount= blog.ViewCount
-                    
+                });
 
+            }
+            return blogmodel;
+        }
 
-                }) ;
-
+        public List<BlogModel> GetBlogModelList(int user_id)
+        {
+            var entity = this.GetAllBlogsByUserID(user_id);
+            var blogmodel = new List<BlogModel>();
+            foreach (Blog blog in entity)
+            {
+                blogmodel.Add(new BlogModel()
+                {
+                    BlogID = blog.BlogID,
+                    Description = blog.Description,
+                    Private = blog.Private,
+                    Title = blog.Title,
+                    TopicID = blog.TopicID,
+                    UrlField = blog.UrlField,
+                    UserID = blog.UserID,
+                    ViewCount = blog.ViewCount
+                });
             }
             return blogmodel;
         }
@@ -65,17 +82,39 @@ namespace TexxtyDataAccess.Repository.Classes
                 UrlField= entity.UrlField,
                 UserID= entity.UserID,
                 ViewCount= entity.ViewCount
-
-
-
             };
         }
+
+        // cross check if blogs userid and provided used id are same or not
+        public BlogModel GetBlogModel(int user_id, int blog_id)
+        {
+            var entity = Get(blog_id);
+            if(entity.UserID == user_id)
+            {
+                return new BlogModel
+                {
+                    BlogID = entity.BlogID,
+                    Description = entity.Description,
+                    Private = entity.Private,
+                    Title = entity.Title,
+                    TopicID = entity.TopicID,
+                    UrlField = entity.UrlField,
+                    UserID = entity.UserID,
+                    ViewCount = entity.ViewCount
+                };
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public bool CheckBlogPrivate(int id) =>
             context.Blogs.Where(b => b.BlogID == id).FirstOrDefault().Private;
 
-        public List<Blog> GetAllBlogsByID(int id)
+        public List<Blog> GetAllBlogsByUserID(int user_id)
         {
-            return context.Blogs.Where(x => x.UserID == id).ToList();
+            return context.Blogs.Where(x => x.UserID == user_id).ToList();
         }
     }
 }
