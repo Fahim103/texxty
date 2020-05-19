@@ -31,6 +31,35 @@ namespace TexxtyDataAccess.Repository.Classes
         public List<Post> GetAllPosts(int id) =>
             context.Posts.Where(u => u.BlogID == id).ToList();
 
+        public List<Post> GetAllPublicPostsByBlogID(int blog_id) =>
+           context.Posts.Where(u => u.BlogID == blog_id && u.Draft == false).ToList();
+
+        public List<PostModel> GetSearchPostModelList(int blog_id)
+        {
+            var posts = GetAllPublicPostsByBlogID(blog_id);
+            if (posts == null)
+                return null;
+
+            var postmodel = new List<PostModel>();
+            foreach (Post post in posts)
+            {
+                postmodel.Add(new PostModel()
+                {
+                    BlogID = post.BlogID,
+                    PostContent = post.PostContent,
+                    PostID = post.PostID,
+                    PublishedDate = post.PublishedDate,
+                    ModifiedDate = post.ModifiedDate,
+                    Draft = post.Draft,
+                    Title = post.Title,
+                    UrlField = post.UrlField,
+                    ViewCount = post.ViewCount
+                });
+            }
+
+            return postmodel;
+        }
+
         public PostModel GetPostModel(int id)
         {
             var entity = Get(id);
@@ -47,10 +76,6 @@ namespace TexxtyDataAccess.Repository.Classes
                 Title = entity.Title,
                 UrlField = entity.UrlField,
                 ViewCount= entity.ViewCount
-                
-              
-                
-
             };
         }
         public  List<PostModel> GetPostModelList(int id)
@@ -70,11 +95,7 @@ namespace TexxtyDataAccess.Repository.Classes
                     Title = post.Title,
                     UrlField= post.UrlField,
                     ViewCount= post.ViewCount
-
-
-
-                }) ;
-
+                });
             }
             return postmodel;
         }
@@ -92,11 +113,9 @@ namespace TexxtyDataAccess.Repository.Classes
             var col = context.Posts.Where(u => u.PostID == postid);
             foreach (var item in col)
             {
-
-
-                 item.ViewCount  = viewcount[0]; } 
-                context.SaveChanges();
-
+                item.ViewCount  = viewcount[0];
+            } 
+            context.SaveChanges();
         }
 
        

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using TexxtyDataAccess.Models.Utilities;
+using TexxtyDataAccess.Repository.Classes;
 
 namespace Texxty_api.Controllers
 {
@@ -34,6 +35,28 @@ namespace Texxty_api.Controllers
             else
             {
                 return Ok(_searchUtility.GetBlogAndPostList(search));
+            }
+        }
+
+        [Route("api/Search/Blogs/{blog_id}")]
+        [HttpGet]
+        public IHttpActionResult GetBlogPostsByID(int blog_id)
+        {
+            try
+            {
+                PostRepository postRepository = new PostRepository();
+                var posts = postRepository.GetSearchPostModelList(blog_id);
+                if (posts == null)
+                {
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound));
+
+                }
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, posts));
+
+            }
+            catch
+            {
+                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Could not find the  posts you are looking for."));
             }
         }
     }

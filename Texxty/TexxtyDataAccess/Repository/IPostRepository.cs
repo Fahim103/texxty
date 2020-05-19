@@ -15,5 +15,7 @@ namespace TexxtyDataAccess.Repository
         List<Post> GetAllPostsByTopic(int topicId);
         void CountViews(int postid);
         List<Post> GetAllPostByTopicFollow(int user_id);
+
+        List<Post> GetAllPublicPostsByBlogID(int blog_id);
     }
 }

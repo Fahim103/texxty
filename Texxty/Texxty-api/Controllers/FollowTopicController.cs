@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
 using Texxty_api.Attributes;
+using TexxtyDataAccess.Models;
+using TexxtyDataAccess.Models.CustomModels;
+using TexxtyDataAccess.Repository;
 using TexxtyDataAccess.Repository.Classes;
 
 namespace Texxty_api.Controllers
@@ -99,6 +103,36 @@ namespace Texxty_api.Controllers
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to create new topics." + e);
             }
+        }
+        
+
+        [Route("GetPosts")]
+        [HttpGet]
+        [BearerAuthentication]
+        public IHttpActionResult GetPostsByFollowTopics(int user_id)
+        {
+            IPostRepository postRepository = new PostRepository();
+            var postList = postRepository.GetAllPostByTopicFollow(user_id);
+            if (postList.Count == 0)
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
+
+            var postModelList = new List<PostModel>();
+            foreach(var item in postList)
+            {
+                postModelList.Add(new PostModel
+                {
+                    PostID = item.PostID,
+                    Title = item.Title,
+                    PostContent = item.PostContent,
+                    PublishedDate = item.PublishedDate,
+                    ModifiedDate = item.ModifiedDate,
+                    BlogID = item.BlogID,
+                    UrlField = item.UrlField,
+                    ViewCount = item.ViewCount
+                });
+            }
+
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, postModelList));
         }
     }
 }
