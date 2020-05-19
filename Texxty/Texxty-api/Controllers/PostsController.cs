@@ -59,7 +59,8 @@ namespace Texxty_api.Controllers
                 else
                 {
                     post.BlogID = blog_id;
-                    post.ModifiedDate = post.PublishedDate;
+                    post.ModifiedDate = DateTime.Now;
+                    post.PublishedDate = DateTime.Now;
                     post.ViewCount = 0;
                     post.UrlField = helper.GenerateSlug(post.Title.ToString());
                     postrepo.Insert(post);
