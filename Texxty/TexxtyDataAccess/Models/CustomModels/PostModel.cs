@@ -16,5 +16,15 @@ namespace TexxtyDataAccess.Models.CustomModels
         public string PostContent { get; set; }
         public int BlogID { get; set; }
         public int ViewCount { get; set; }
+        
+        public List<string> Resources = new List<string>
+            {
+                "[GET]      api/Blogs/{blog_id}/Posts",
+                "[POST]     api/Blogs/{blog_id}/Posts",
+                "[GET]      api/Blogs/{blog_id}/Posts/{post_id}",
+                "[PUT]      api/Blogs/{blog_id}/Posts/{post_id}",
+                "[DELETE]   api/Blogs/{blog_id}/Posts/{post_id}",
+                "[PUT]      api/Blogs/{blog_id}/Posts/{post_id}/UpdateViewCount",
+            };
     }
 }
