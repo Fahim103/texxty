@@ -8,11 +8,11 @@ namespace Texxty.Repository.Classes
 {
     public class PostRepository : Repository<Post>, IPostRepository
     {
-        private readonly TexxtyDBEntities context;
+        private readonly TexxtyDBEntitiesMVC context;
 
         public PostRepository()
         {
-            this.context = new TexxtyDBEntities();
+            this.context = new TexxtyDBEntitiesMVC();
         }
 
         public void DeleteByBlog(int blogId)

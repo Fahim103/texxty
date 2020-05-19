@@ -8,11 +8,11 @@ namespace Texxty.Repository.Classes
 {
     public class TopicRepository : Repository<BlogTopic>, ITopicRepository
     {
-        private readonly TexxtyDBEntities context;
+        private readonly TexxtyDBEntitiesMVC context;
 
         public TopicRepository()
         {
-            this.context = new TexxtyDBEntities();
+            this.context = new TexxtyDBEntitiesMVC();
         }
     }
 }

@@ -8,11 +8,11 @@ namespace Texxty.Repository.Classes
 {
     public class FollowTopicRepository : Repository<TopicFollow>, IFollowTopicRepository
     {
-        private readonly TexxtyDBEntities context;
+        private readonly TexxtyDBEntitiesMVC context;
 
         public FollowTopicRepository()
         {
-            this.context = new TexxtyDBEntities();
+            this.context = new TexxtyDBEntitiesMVC();
         }
 
         public List<TopicFollow> GetTopicsByUser(int user_id) =>

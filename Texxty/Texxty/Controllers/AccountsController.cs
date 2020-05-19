@@ -12,12 +12,12 @@ namespace Texxty.Controllers
     public class AccountsController : Controller
     {
         private readonly UserRepository userRepository;
-        private readonly TexxtyDBEntities context;
+        private readonly TexxtyDBEntitiesMVC context;
 
         public AccountsController()
         {
             userRepository = new UserRepository();
-            context = new TexxtyDBEntities();
+            context = new TexxtyDBEntitiesMVC();
         }
 
         [NonAction]

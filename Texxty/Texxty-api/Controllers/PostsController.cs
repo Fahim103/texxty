@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.DynamicData;
 using System.Web.Http;
 using Slugify;
+using TexxtyDataAccess.Repository.Classes;
 using Texxty_api.Attributes;
 using TexxtyDataAccess.Models;
-
-using TexxtyDataAccess.Repository.Classes;
+using TexxtyDataAccess.Repository;
 
 namespace Texxty_api.Controllers
 {
@@ -77,11 +78,13 @@ namespace Texxty_api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to create new post." + e);
             }
         }
+
         [Route("{post_id}")]
         [HttpPut]
         [BearerAuthentication]
         public HttpResponseMessage Put([FromBody]Post post, [FromUri]int post_id)
-        { try
+        { 
+            try
             {
                 if (!ModelState.IsValid)
                 {
@@ -90,16 +93,19 @@ namespace Texxty_api.Controllers
                 }
                 else
                 {
-                    post.PostID = post_id;
+                    // TODO : Check the comments
+                    // post.PostID = post_id; // This line isn't needed as well probably 
                     Post entity = postrepo.Get(post_id);
+                    if(entity == null)
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to edit post.");
                     entity.PostContent = post.PostContent;
                     entity.ModifiedDate = DateTime.Now;
                     entity.Title = post.Title;
-                    entity.ViewCount = post.ViewCount;
+                    // entity.ViewCount = post.ViewCount; // This is proabably not needed here as this method is used by user to update post
                     entity.Draft = post.Draft;
                     entity.UrlField = helper.GenerateSlug(post.Title.ToString());
                     postrepo.Update(entity);
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    return Request.CreateResponse(HttpStatusCode.OK, postrepo.GetPostModel(post_id));
                 }
             }
             catch
@@ -109,6 +115,44 @@ namespace Texxty_api.Controllers
             }
 
         }
+
+        [Route("{post_id}/UpdateViewCount")]
+        [HttpPut]
+        public HttpResponseMessage UpdateViewCount([FromUri]int post_id, [FromBody]int userID)
+        {
+            try
+            {
+                Post post = postrepo.Get(post_id);
+                if(userID == 0)
+                {
+                    post.ViewCount = post.ViewCount + 1;
+                    postrepo.Update(post);
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    IBlogRepository blogRespository = new BlogRepository();
+                    int dbUserID = blogRespository.GetUserIDByBlogID(post.BlogID);
+                    if(dbUserID != userID)
+                    {
+                        post.ViewCount = post.ViewCount + 1;
+                        postrepo.Update(post);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.Accepted);
+                    }
+                }
+            }
+            catch
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to update count.");
+
+            }
+
+        }
+
         [Route("{post_id}")]
         [BearerAuthentication]
         public HttpResponseMessage Delete(int post_id)

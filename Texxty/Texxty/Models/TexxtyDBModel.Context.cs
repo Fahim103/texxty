@@ -13,10 +13,10 @@ namespace Texxty.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class TexxtyDBEntities : DbContext
+    public partial class TexxtyDBEntitiesMVC : DbContext
     {
-        public TexxtyDBEntities()
-            : base("name=TexxtyDBEntities")
+        public TexxtyDBEntitiesMVC()
+            : base("name=TexxtyDBEntitiesMVC")
         {
         }
     

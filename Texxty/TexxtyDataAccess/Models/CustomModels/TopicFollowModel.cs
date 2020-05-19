@@ -10,9 +10,6 @@ namespace TexxtyDataAccess.Models.CustomModels
     {
         public int TopicID { get; set; }
         public int TopicFollowID { get; set; }
-
         public int UserID { get; set; }
-
-
     }
 }
