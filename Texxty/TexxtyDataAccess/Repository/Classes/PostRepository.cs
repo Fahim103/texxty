@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Web;
 using TexxtyDataAccess.Models;
 using TexxtyDataAccess.Models.CustomModels;
@@ -33,6 +34,8 @@ namespace TexxtyDataAccess.Repository.Classes
         public PostModel GetPostModel(int id)
         {
             var entity = Get(id);
+            if (entity == null)
+                return null;
             return new PostModel
             {
                 PostID = entity.PostID,

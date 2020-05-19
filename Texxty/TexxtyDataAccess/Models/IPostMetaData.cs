@@ -12,8 +12,8 @@ namespace TexxtyDataAccess.Models
         int PostID { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Title is required")]
         string Title { get; set; }
-        System.DateTime PublishedDate { get; set; }
-        System.DateTime ModifiedDate { get; set; }
+        DateTime PublishedDate { get; set; }
+        DateTime ModifiedDate { get; set; }
         string UrlField { get; set; }
         bool Draft { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "PostContent is required")]

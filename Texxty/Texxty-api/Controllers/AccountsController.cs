@@ -30,6 +30,27 @@ namespace Texxty_api.Controllers
 
         [HttpGet]
         [BearerAuthentication]
+        public IHttpActionResult GetUsers()
+        {
+            try
+            {
+                var users = userRepository.GetAllUserModel();
+
+                if (users == null)
+                {
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound));
+                }
+
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, users));
+            }
+            catch
+            {
+                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Could not find the specified user."));
+            }
+        }
+
+        [HttpGet]
+        [BearerAuthentication]
         [Route("{user_id}/Details")]
         public IHttpActionResult GetUserByID(int user_id)
         {
@@ -52,7 +73,7 @@ namespace Texxty_api.Controllers
 
         [HttpPut]
         [Route("{user_id}/UpdateInformation")]
-        public IHttpActionResult UpdateInformation(int user_id,User user)
+        public IHttpActionResult UpdateInformation(int user_id, User user)
         {
             if (string.IsNullOrWhiteSpace(user.FullName))
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Fullname cannot be Empty"));
@@ -94,16 +115,16 @@ namespace Texxty_api.Controllers
 
         [HttpPut]
         [Route("{user_id}/UpdatePassword")]
-        public IHttpActionResult UpdatePassword(int user_id,[FromBody]PasswordChangeInfo passwordChangeInfo)
+        public IHttpActionResult UpdatePassword(int user_id, [FromBody]PasswordChangeInfo passwordChangeInfo)
         {
             var dbUser = userRepository.Get(user_id);
-            if(dbUser == null)
+            if (dbUser == null)
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound, "User not found"));
 
-            if(!dbUser.Password.Equals(passwordChangeInfo.CurrentPassword))
+            if (!dbUser.Password.Equals(passwordChangeInfo.CurrentPassword))
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Incorrect password"));
 
-            if(string.IsNullOrWhiteSpace(passwordChangeInfo.NewPassword) || string.IsNullOrWhiteSpace(passwordChangeInfo.NewPasswordConfirm) || !passwordChangeInfo.NewPassword.Equals(passwordChangeInfo.NewPasswordConfirm))
+            if (string.IsNullOrWhiteSpace(passwordChangeInfo.NewPassword) || string.IsNullOrWhiteSpace(passwordChangeInfo.NewPasswordConfirm) || !passwordChangeInfo.NewPassword.Equals(passwordChangeInfo.NewPasswordConfirm))
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "New Password Empty or Doesn't match"));
 
             try

@@ -8,11 +8,11 @@ namespace Texxty.Repository.Classes
 {
     public class BlogRepository : Repository<Blog>, IBlogRepository
     {
-        private readonly TexxtyDBEntities context;
+        private readonly TexxtyDBEntitiesMVC context;
 
         public BlogRepository()
         {
-            this.context = new TexxtyDBEntities();
+            this.context = new TexxtyDBEntitiesMVC();
         }
         public void CountViews(int blogid)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using Texxty_api.Attributes;
 using TexxtyDataAccess.Models;
@@ -14,15 +15,26 @@ namespace Texxty_api.Controllers
     [RoutePrefix("api/Topics")]
     public class TopicController : ApiController
     {
-        // TODO : WIll need to Add Authorization of Admin only to create, update, delete post
-        // TODO : Maybe create a utility function to test if user is admin or not for CREATE, UPDATE, DELETE Methods
-        // TODO : GetTopicList MUST BE ACCESSIBLE BY ANY VALID LOGGED USER, EVEN IF NOT ADMIN
+        // [IMPORTANT] GetTopicList MUST BE ACCESSIBLE BY ANY VALID LOGGED USER, EVEN IF NOT ADMIN 
+        // TODO [DONE] : WIll need to Add Authorization of Admin only to create, update, delete post
+
+        private bool IsUserAdmin()
+        {
+            return Thread.CurrentPrincipal.IsInRole("admin") ? true : false;
+        }
 
         [Route("")]
         [HttpPost]
+        [BearerAuthentication]
         public IHttpActionResult Post([FromBody]BlogTopic blogTopic)
         {
-            if(!ModelState.IsValid)
+            if (!IsUserAdmin())
+            {
+                // If user isn't admin
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Unauthorized));
+            }
+
+            if (!ModelState.IsValid)
             {
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState));
             }
@@ -42,6 +54,7 @@ namespace Texxty_api.Controllers
 
         [Route("")]
         [HttpGet]
+        [BearerAuthentication]
         public IHttpActionResult GetTopicList()
         {
             ITopicRepository topicRepository = new TopicRepository();
@@ -56,8 +69,14 @@ namespace Texxty_api.Controllers
 
         [Route("{topic_id}")]
         [HttpGet]
+        [BearerAuthentication]
         public IHttpActionResult GetTopicByID(int topic_id)
         {
+            if (!IsUserAdmin())
+            {
+                // If user isn't admin
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Unauthorized));
+            }
             ITopicRepository topicRepository = new TopicRepository();
             var blogTopics = topicRepository.GetTopicsModelByID(topic_id);
             if (blogTopics != null)
@@ -69,13 +88,22 @@ namespace Texxty_api.Controllers
 
         [Route("{topic_id}")]
         [HttpPut]
+        [BearerAuthentication]
+
         public IHttpActionResult Put(int topic_id, [FromBody]BlogTopic blogTopic)
         {
+            if (!IsUserAdmin())
+            {
+                // If user isn't admin
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Unauthorized));
+            }
+
             if (!ModelState.IsValid)
             {
                 // IF Model State is invalid
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState));
             }
+
             ITopicRepository topicRepository = new TopicRepository();
             // Get Topic from Db
             try
@@ -101,8 +129,15 @@ namespace Texxty_api.Controllers
 
         [Route("{topic_id}")]
         [HttpDelete]
+        [BearerAuthentication]
         public IHttpActionResult Delete(int topic_id)
         {
+            if (!IsUserAdmin())
+            {
+                // If user isn't admin
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Unauthorized));
+            }
+
             ITopicRepository topicRepository = new TopicRepository();
             IBlogRepository blogRepository = new BlogRepository();
             // Get Topic from Db

@@ -11,8 +11,8 @@ using TexxtyDataAccess.Repository.Classes;
 
 namespace Texxty_api.Controllers
 {
-   [RoutePrefix("api")]
 
+    [RoutePrefix("api")]
     public class BlogController : ApiController
     {
         private readonly BlogRepository  blogrepo = new BlogRepository();
@@ -33,7 +33,7 @@ namespace Texxty_api.Controllers
                 }
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, blogs));
             }
-            catch(Exception e)
+            catch
             {
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong"));
             }
@@ -54,7 +54,7 @@ namespace Texxty_api.Controllers
 
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, blog));
             }
-            catch (Exception e)
+            catch
             {
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong"));
             }
@@ -79,8 +79,7 @@ namespace Texxty_api.Controllers
             }
             catch (Exception e)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-               ""+e);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "" + e);
             }
         }
 
@@ -102,11 +101,8 @@ namespace Texxty_api.Controllers
             }
             catch
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    "Could not find the specified blog.");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Could not find the specified blog.");
             }
-
-
         }
 
         [Route("Blogs")]
@@ -171,6 +167,30 @@ namespace Texxty_api.Controllers
             }
         }
 
+        // Method in which blogViewCount is incremented when viewd from search result
+        [Route("Blogs/{blog_id}/UpdateViewCount")]
+        [HttpPut]
+        public IHttpActionResult UpdateBlogViewCount([FromUri]int blog_id, [FromBody]int? userID)
+        {
+            try
+            {
+                Blog blog = blogrepo.Get(blog_id);
+                if (blog.UserID != userID)
+                {
+                    blog.ViewCount = blog.ViewCount + 1;
+                    blogrepo.Update(blog);
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK));
+                }
+            }
+            catch
+            {
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Blog View count wasn't updated"));
+            }
+
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.Accepted));
+        }
+
+
         [Route("Blogs/{blog_id}")]
         [BearerAuthentication]
         public HttpResponseMessage Delete(int blog_id)
@@ -188,7 +208,6 @@ namespace Texxty_api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to delete post.");
 
             }
-
         }
     }
 }

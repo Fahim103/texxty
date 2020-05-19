@@ -40,7 +40,5 @@ namespace Texxty_api.Controllers
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.Unauthorized));
             }
         }
-
-        
     }
 }

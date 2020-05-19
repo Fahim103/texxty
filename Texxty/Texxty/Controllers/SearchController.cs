@@ -11,13 +11,13 @@ namespace Texxty.Controllers
 {
     public class SearchController : Controller
     {
-        private readonly TexxtyDBEntities context;
+        private readonly TexxtyDBEntitiesMVC context;
         private readonly BlogRepository blogRepository;
         private readonly PostRepository postRepository;
 
         public SearchController()
         {
-            context = new TexxtyDBEntities();
+            context = new TexxtyDBEntitiesMVC();
             blogRepository = new BlogRepository();
             postRepository = new PostRepository();
         }

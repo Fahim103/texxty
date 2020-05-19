@@ -18,6 +18,7 @@ namespace TexxtyDataAccess.Repository.Classes
 
         public List<TopicFollow> GetTopicsByUser(int user_id) =>
             context.TopicFollows.Where(tf => tf.UserID == user_id).ToList();
+
         public List<TopicFollowModel> GetTopicsByUserModel(int user_id)
         {
             var topicfollow =context.TopicFollows.Where(tf => tf.UserID == user_id).ToList();
@@ -29,8 +30,6 @@ namespace TexxtyDataAccess.Repository.Classes
                    TopicFollowID=  topic.TopicFollowID,
                    TopicID= topic.TopicID,
                    UserID= topic.UserID
-
-
                 });
 
             }
@@ -56,7 +55,7 @@ namespace TexxtyDataAccess.Repository.Classes
             foreach (string id in topicList)
             {
                 int topic_id = int.Parse(id);
-               var  topicfollow= context.TopicFollows.Add(new TopicFollow
+                var  topicfollow= context.TopicFollows.Add(new TopicFollow
                 {
                     UserID = user_id,
                     TopicID = topic_id
@@ -64,8 +63,6 @@ namespace TexxtyDataAccess.Repository.Classes
             }
 
             context.SaveChanges();
-
-            
         }
     }
 }

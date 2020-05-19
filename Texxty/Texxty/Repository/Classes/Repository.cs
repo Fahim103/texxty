@@ -8,11 +8,11 @@ namespace Texxty.Repository.Classes
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        private readonly TexxtyDBEntities context;
+        private readonly TexxtyDBEntitiesMVC context;
 
         public Repository()
         {
-            this.context = new TexxtyDBEntities();
+            this.context = new TexxtyDBEntitiesMVC();
         }
 
         public IEnumerable<TEntity> GetAll()

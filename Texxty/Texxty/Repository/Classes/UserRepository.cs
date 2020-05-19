@@ -8,11 +8,11 @@ namespace Texxty.Repository.Classes
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
-        private readonly TexxtyDBEntities context;
+        private readonly TexxtyDBEntitiesMVC context;
 
         public UserRepository()
         {
-            this.context = new TexxtyDBEntities();
+            this.context = new TexxtyDBEntitiesMVC();
         }
 
         public bool CheckUsernameAvailable(User user) =>

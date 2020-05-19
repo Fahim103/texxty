@@ -72,6 +72,9 @@ namespace TexxtyDataAccess.Repository.Classes
         public BlogModel GetBlogModel(int id)
         {
             var entity = Get(id);
+            if (entity == null)
+                return null;
+
             return new BlogModel
             {
                 BlogID = entity.BlogID,
@@ -115,6 +118,12 @@ namespace TexxtyDataAccess.Repository.Classes
         public List<Blog> GetAllBlogsByUserID(int user_id)
         {
             return context.Blogs.Where(x => x.UserID == user_id).ToList();
+        }
+
+        // Returns userid of blog
+        public int GetUserIDByBlogID(int blog_id)
+        {
+            return context.Blogs.Where(x => x.BlogID == blog_id).FirstOrDefault().UserID;
         }
     }
 }

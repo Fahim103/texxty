@@ -15,5 +15,6 @@ namespace TexxtyDataAccess.Repository
         List<Blog> GetAllBlogsByUserID(int user_id);
         List<BlogModel> GetBlogModelList();
         BlogModel GetBlogModel(int id);
+        int GetUserIDByBlogID(int blog_id);
     }
 }

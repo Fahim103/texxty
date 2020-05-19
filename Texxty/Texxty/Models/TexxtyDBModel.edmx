@@ -349,7 +349,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="TexxtyDBEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="TexxtyDBEntitiesMVC" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Blogs" EntityType="Self.Blog" />
           <EntitySet Name="BlogFollows" EntityType="Self.BlogFollow" />
           <EntitySet Name="BlogTopics" EntityType="Self.BlogTopic" />
@@ -390,7 +390,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="TexxtyModelStoreContainer" CdmEntityContainer="TexxtyDBEntities">
+        <EntityContainerMapping StorageEntityContainer="TexxtyModelStoreContainer" CdmEntityContainer="TexxtyDBEntitiesMVC">
           <EntitySetMapping Name="Blogs">
             <EntityTypeMapping TypeName="TexxtyModel.Blog">
               <MappingFragment StoreEntitySet="Blog">
