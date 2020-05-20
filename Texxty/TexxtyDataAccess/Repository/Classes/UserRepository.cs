@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoreLinq.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,6 +15,25 @@ namespace TexxtyDataAccess.Repository.Classes
         public UserRepository()
         {
             this.context = new TexxtyDBEntities();
+        }
+
+        public IEnumerable<UserModel> GetAllUserModel()
+        {
+            var entities = GetAll();
+            List<UserModel> listOfEntities = new List<UserModel>();
+            foreach(var entity in entities)
+            {
+                listOfEntities.Add(new UserModel
+                {
+                    UserID = entity.UserID,
+                    Username = entity.Username,
+                    Email = entity.Email,
+                    FullName = entity.FullName,
+                    ActiveStatus = entity.ActiveStatus,
+                    Role = entity.Role,
+                });
+            }
+            return listOfEntities;
         }
 
         public UserModel GetUserModel(int id)

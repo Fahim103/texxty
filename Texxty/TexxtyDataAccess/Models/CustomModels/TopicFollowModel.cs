@@ -11,5 +11,13 @@ namespace TexxtyDataAccess.Models.CustomModels
         public int TopicID { get; set; }
         public int TopicFollowID { get; set; }
         public int UserID { get; set; }
+
+        public List<string> Resources = new List<string>
+            {
+                "[GET]      /api/FollowTopics/{user_id}",
+                "[DELETE]   /api/FollowTopics/{user_id}",
+                "[DELETE]   /api/FollowTopics/{user_id}/{follow_topic_id}",
+                "[POST]     /api/FollowTopics/{user_id}",
+            };
     }
 }
